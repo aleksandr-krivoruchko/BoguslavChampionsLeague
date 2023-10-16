@@ -5,7 +5,9 @@
   padding: 0;
   color: white;
 }
-
+ul {
+  list-style: none;
+}
 html {
   background-color: #000000;
 }
@@ -20,6 +22,7 @@ th,
 td {
   padding: 10px;
   width: 30px;
+  height: 30px;
   border-bottom: 1px solid grey;
   border-right: 1px solid grey;
 }
@@ -81,4 +84,12 @@ table .col {
 }
 .score {
   color: red;
+}
+li {
+  padding: 2px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+li:hover {
+  background-color: gray;
 }

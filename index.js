@@ -314,9 +314,26 @@ const lc = {
 };
 
 const root = document.querySelector(".root");
-
 renderTable();
 renderGroup();
+
+const a = roundRobin(takeTeamName()[0]);
+const b = roundRobin(takeTeamName()[1]);
+const c = roundRobin(takeTeamName()[2]);
+const d = roundRobin(takeTeamName()[3]);
+
+for (let i = 0; i < a.length; i++) {
+  renderMatches(a[i], "A");
+}
+for (let i = 0; i < b.length; i++) {
+  renderMatches(b[i], "B");
+}
+for (let i = 0; i < c.length; i++) {
+  renderMatches(c[i], "C");
+}
+for (let i = 0; i < d.length; i++) {
+  renderMatches(d[i], "D");
+}
 
 function renderTable() {
   const markup = groups
@@ -337,8 +354,8 @@ function renderTable() {
 		</tr>
       </table>
 		</div>
-		<ol data-list="${gr.title}">
-		</ol>
+		<ul data-list="${gr.title}">
+		</ul>
 		</div>
 		`;
     })
@@ -362,24 +379,17 @@ function renderGroup() {
     document
       .querySelector(`table[data-group="${gr.title}"]`)
       .insertAdjacentHTML("beforeend", markup.join(""));
-    //  document
-    //    .querySelector(`ol[data-list='${gr.title}']`)
-    //    .insertAdjacentHTML("beforeend", markup.join(""));
   });
 }
-
-function renderMatches(teams) {
+function renderMatches(teams, letter) {
   const markup = teams.map((t) => {
-    return `<li><span>${t[0]}  <span class="score">0</span></span> - <span ><span class="score">0</span>  ${t[1]}</span></li>`;
+    return `<li>${t[0]}  <span class="score">0</span> - <span class="score">0</span>  ${t[1]}</li>`;
   });
   document
-    .querySelector("ol[data-list='A']")
+    .querySelector(`ul[data-list='${letter}']`)
     .insertAdjacentHTML("beforeend", markup.join(""));
 }
-
-let teams = ["Tigers", "Foofels", "Drampamdom", "Lakebaka"];
-
-const roundRobin = (teams) => {
+function roundRobin(teams) {
   let schedule = [];
   let league = teams.slice();
 
@@ -403,14 +413,14 @@ const roundRobin = (teams) => {
     league.splice(1, 0, league.pop());
   }
   return schedule;
-};
-
-let leagueSchedule = roundRobin(takeTeamName()[0]);
-
-for (let i = 0; i < leagueSchedule.length; i++) {
-  renderMatches(leagueSchedule[i]);
 }
-
 function takeTeamName() {
   return groups.map((gr) => gr.teams.map((t) => t.name));
 }
+function onMatchClick(e) {
+  console.log(e.target.closest("li"));
+}
+const list = document.querySelectorAll("ul");
+list.forEach((el) => {
+  el.addEventListener("click", onMatchClick);
+});
