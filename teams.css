@@ -82,7 +82,14 @@ table .col {
   justify-content: space-around;
   align-items: center;
 }
-.score {
+.home,
+.away {
+  color: yellow;
+}
+.winner {
+  color: #77ff21;
+}
+.loser {
   color: red;
 }
 li {
@@ -92,4 +99,71 @@ li {
 }
 li:hover {
   background-color: gray;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  right: 15%;
+  top: 10%;
+  width: 40%;
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+  background-color: #97dd55;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #fff;
+}
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+form {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+}
+input {
+  padding: 5px;
+  margin-bottom: 10px;
+  color: #06770c;
+  font-size: 18px;
+  outline-color: #06770c;
+}
+form span {
+  font-size: 25px;
+  color: #000000;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.modal button {
+  padding: 10px;
+  margin-left: 10px;
+  text-align: center;
+  background-color: inherit;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+.modal button:hover {
+  color: #06770c;
+  border-color: #06770c;
 }
