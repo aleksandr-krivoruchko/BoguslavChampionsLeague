@@ -1,0 +1,75 @@
+body {
+  background-image: url(img/xDRd0U2-uefa-champions-league-wallpaper.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  margin: 0 auto;
+}
+h1 {
+  color: #fff;
+  text-align: center;
+  font-size: 50px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 100px;
+}
+img {
+  width: 700px;
+  height: auto;
+}
+.players {
+  display: flex;
+  justify-content: space-around;
+}
+.player {
+  text-align: center;
+}
+.stars {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stars img {
+  width: 200px;
+  margin-bottom: 50px;
+  animation-name: spin;
+  animation-duration: 15s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+a {
+  width: 200px;
+  padding: 10px;
+  font-size: 36px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  background-color: transparent;
+  border: 2px solid #fff;
+  border-radius: 30px;
+  cursor: pointer;
+}
+a:hover {
+  color: yellow;
+  border-color: yellow;
+}
+a:active {
+  color: red;
+  border-color: red;
+  width: 180px;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+audio {
+  display: none;
+}
