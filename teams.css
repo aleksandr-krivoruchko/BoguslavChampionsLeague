@@ -41,39 +41,33 @@ th {
   margin: 20px;
 }
 
-.wpos {
+.sasha {
   text-align: center;
+  background-color: #4b484a;
+  cursor: pointer;
+}
+.pasha {
+  text-align: center;
+  background-color: #7e6250;
+  cursor: pointer;
 }
 
-.wpos td {
+.sasha td {
   color: #77ff21;
 }
-
-.pos {
-  text-align: center;
-}
-
-.pos td {
-  color: #ff7b21;
+.www {
+  background-color: inherit;
 }
 
 table .col {
   border-bottom: 1px solid #ffffff;
 }
 
-.wpos:hover {
+tr:hover {
   background-color: #77ff21;
 }
 
-.wpos:hover td {
-  color: #000000;
-}
-
-.pos:hover {
-  background-color: #ff7b21;
-}
-
-.pos:hover td {
+tr:hover td {
   color: #000000;
 }
 
@@ -102,16 +96,16 @@ li:hover {
 }
 
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  display: none;
+  position: fixed;
+  z-index: 1;
   right: 15%;
   top: 10%;
   width: 40%;
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  /* height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);  */
 }
 
 .modal-content {
@@ -119,20 +113,6 @@ li:hover {
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #fff;
-}
-/* The Close Button */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
 }
 form {
   display: flex;
@@ -166,4 +146,11 @@ form span {
 .modal button:hover {
   color: #06770c;
   border-color: #06770c;
+}
+
+.open {
+  display: block;
+}
+.close {
+  display: none;
 }

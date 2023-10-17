@@ -11,6 +11,7 @@ const groups = [
         draw: 2,
         lose: 1,
         goals: { for: 22, against: 5 },
+        owner: "Sasha",
       },
       {
         id: 2,
@@ -21,6 +22,7 @@ const groups = [
         draw: 2,
         lose: 1,
         goals: { for: 14, against: 7 },
+        owner: "Pasha",
       },
       {
         id: 3,
@@ -31,6 +33,7 @@ const groups = [
         draw: 2,
         lose: 1,
         goals: { for: 12, against: 9 },
+        owner: "Sasha",
       },
       {
         id: 4,
@@ -41,6 +44,7 @@ const groups = [
         draw: 2,
         lose: 1,
         goals: { for: 11, against: 12 },
+        owner: "Pasha",
       },
     ],
   },
@@ -180,22 +184,40 @@ const groups = [
     ],
   },
 ];
-
+const matches = [];
 const root = document.querySelector(".root");
+
+const save = (key, value) => {
+  try {
+    const serializedState = JSON.stringify(value);
+    localStorage.setItem(key, serializedState);
+  } catch (error) {
+    console.error("Set state error: ", error.message);
+  }
+};
+
+const load = (key) => {
+  try {
+    const serializedState = localStorage.getItem(key);
+    return serializedState === null ? undefined : JSON.parse(serializedState);
+  } catch (error) {
+    console.error("Get state error: ", error.message);
+  }
+};
 
 renderTable();
 renderGroup();
 
-const a = roundRobin(takeTeamName()[0]);
+const a = roundRobin(takeTeamName()[0], "A");
+console.log(a);
 const b = roundRobin(takeTeamName()[1]);
 const c = roundRobin(takeTeamName()[2]);
 const d = roundRobin(takeTeamName()[3]);
-
 for (let i = 0; i < a.length; i++) {
   renderMatches(a[i], "A");
-  renderMatches(b[i], "B");
-  renderMatches(c[i], "C");
-  renderMatches(d[i], "D");
+  //   renderMatches(b[i], "B");
+  //   renderMatches(c[i], "C");
+  //   renderMatches(d[i], "D");
 }
 
 function renderTable() {
@@ -228,7 +250,7 @@ function renderTable() {
 function renderGroup() {
   groups.map((gr) => {
     const markup = gr.teams.map((t) => {
-      return `<tr class="wpos">
+      return `<tr class= ${t.owner === "Sasha" ? "sasha" : "pasha"}>
 		<td>${t.name}</td>
 		<td>${t.played}</td>
 		<td>${t.win}</td>
@@ -245,15 +267,24 @@ function renderGroup() {
   });
 }
 function renderMatches(teams, letter) {
+  //   const qqq = {
+  //     id: "id" + Math.random().toString(16).slice(2),
+  //     group: letter,
+  //     teams: [...teams[0]],
+  //     goals: [],
+  //   };
+  //   matches.push(qqq);
+  //   save("matches", matches);
+
   const markup = teams.map((t) => {
-    return `<li class="match"><p>${t[0]}  <span class="home">0</span> - <span class="away">2</span>  ${t[1]}</p><div class="modal">
+    return `<li class="match" id=""><p><span data-team="home">${t[0]}</span>  <span class="home">0</span> - <span class="away">0</span>  <span data-team="away">${t[1]}</span></p><div class="modal">
   <div class="modal-content">
        <form>
-      <input type="text" name="home" placeholder="${t[0]}">
+      <input type="number" name="home" placeholder="${t[0]}">
       <span> - </span>
-      <input type="text" name="away" placeholder="${t[1]}" />
+      <input type="number" name="away" placeholder="${t[1]}" />
       <button type="submit">OK</button>
-		</form>
+		</form>	
   </div>
 </div>
 </li>`;
@@ -262,7 +293,7 @@ function renderMatches(teams, letter) {
     .querySelector(`ul[data-list='${letter}']`)
     .insertAdjacentHTML("beforeend", markup.join(""));
 }
-function roundRobin(teams) {
+function roundRobin(teams, group) {
   let schedule = [];
   let league = teams.slice();
 
@@ -285,75 +316,89 @@ function roundRobin(teams) {
     }
     league.splice(1, 0, league.pop());
   }
-  return schedule;
+  return {
+    id: "id" + Math.random().toString(16).slice(2),
+    group: group,
+    teams: schedule,
+    goals: [],
+  };
 }
 function takeTeamName() {
   return groups.map((gr) => gr.teams.map((t) => t.name));
 }
 
-let score = 0;
+//!=========== Список матчей с модалкой =================
 
-// function onMatchClick(e) {
-//   let home = e.target.closest("li").querySelector(".home");
-//   let away = e.target.closest("li").querySelector(".away");
-//   score = prompt();
-//   home.textContent = score.split("-")[0];
-//   away.textContent = score.split("-")[1];
-// }
+const list = document.querySelectorAll("li");
+list.forEach((el) => {
+  el.addEventListener("click", modalOpen);
+});
 
-function onMatchClick(e) {
-  const btn = e.target.closest("li");
-  const modal = btn.querySelector(".modal");
+function modalOpen(e) {
+  const modal = e.target.closest("li").querySelector(".modal");
+  const form = e.target.closest("li").querySelector("form");
+  const closeBtn = form.querySelector("button");
 
-  modal.style.display = "block";
+  modal.classList.add("open");
+
+  form.addEventListener("submit", handleSubmit);
+  closeBtn.addEventListener("click", closeModal);
 }
 
-const list = document.querySelectorAll("ul");
-list.forEach((el) => {
-  el.addEventListener("click", onMatchClick);
-  el.querySelector("form").addEventListener("submit", handleSubmit);
-});
+function closeModal() {
+  const modal = document.querySelector(".open");
+  modal.classList.replace("open", "close");
+}
 
 function handleSubmit(event) {
   event.preventDefault();
 
   const form = event.target;
+  const scoreHome = form.closest("li").querySelector(".home");
+  const scoreAway = form.closest("li").querySelector(".away");
+  const teamHome = form.closest("li").querySelector("span[data-team='home']");
+  const teamAway = form.closest("li").querySelector("span[data-team='away']");
+
   const home = form.elements.home.value;
   const away = form.elements.away.value;
 
+  scoreHome.textContent = home;
+  scoreAway.textContent = away;
+
+  console.log(teamAway.textContent);
+
   if (home === "" || away === "") {
-    return prompt("Please fill in all the fields!");
+    return prompt("Какой счет, мать вашу???");
   }
 
   if (home > away) {
-    console.log("Победа хозяев");
+    console.log(`Победа хозяев: ${home} - ${away}`);
   } else if (home < away) {
     console.log("Победа гостей");
   } else {
     console.log("Победителя не выявлено");
   }
-
-  const modal = document.querySelector(".modal");
-  modal.style.display = "none";
+  const match = {
+    group: "A",
+    [teamHome.textContent]: home,
+    [teamAway.textContent]: away,
+  };
+  matches.push(match);
+  save("matches", matches);
 }
-// window.onclick = function (event) {
-//   if (event.target == modal) {
-//     modal.style.display = "none";
-//   }
-// };
 
-// function checkWinner() {
-//   const home = document.querySelectorAll(".home");
-//   const away = document.querySelectorAll(".away");
+function checkWinner() {
+  const home = document.querySelectorAll(".home");
+  const away = document.querySelectorAll(".away");
 
-//   for (let i = 0; i < home.length; i++) {
-//     if (home[i].textContent > away[i].textContent) {
-//       home[i].classList.add("winner");
-//       away[i].classList.add("loser");
-//     } else if (home[i].textContent < away[i].textContent) {
-//       away[i].classList.add("winner");
-//       home[i].classList.add("loser");
-//     }
-//   }
-// }
-// checkWinner();
+  for (let i = 0; i < home.length; i++) {
+    if (home[i].textContent > away[i].textContent) {
+      home[i].classList.add("winner");
+      away[i].classList.add("loser");
+    } else if (home[i].textContent < away[i].textContent) {
+      away[i].classList.add("winner");
+      home[i].classList.add("loser");
+    }
+  }
+}
+checkWinner();
