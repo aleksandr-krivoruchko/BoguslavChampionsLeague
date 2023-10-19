@@ -267,15 +267,6 @@ function renderGroup() {
   });
 }
 function renderMatches(teams, letter) {
-  //   const qqq = {
-  //     id: "id" + Math.random().toString(16).slice(2),
-  //     group: letter,
-  //     teams: [...teams[0]],
-  //     goals: [],
-  //   };
-  //   matches.push(qqq);
-  //   save("matches", matches);
-
   const markup = teams.map((t) => {
     return `<li class="match" id=""><p><span data-team="home">${t[0]}</span>  <span class="home">0</span> - <span class="away">0</span>  <span data-team="away">${t[1]}</span></p><div class="modal">
   <div class="modal-content">
@@ -293,7 +284,7 @@ function renderMatches(teams, letter) {
     .querySelector(`ul[data-list='${letter}']`)
     .insertAdjacentHTML("beforeend", markup.join(""));
 }
-function roundRobin(teams, group) {
+function roundRobin(teams) {
   let schedule = [];
   let league = teams.slice();
 
@@ -316,12 +307,13 @@ function roundRobin(teams, group) {
     }
     league.splice(1, 0, league.pop());
   }
-  return {
-    id: "id" + Math.random().toString(16).slice(2),
-    group: group,
-    teams: schedule,
-    goals: [],
-  };
+  //   return {
+  //     id: "id" + Math.random().toString(16).slice(2),
+  //     group: group,
+  //     teams: schedule,
+  //     goals: [],
+  //   };
+  return schedule;
 }
 function takeTeamName() {
   return groups.map((gr) => gr.teams.map((t) => t.name));

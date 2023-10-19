@@ -1,206 +1,114 @@
-const teams = [
-  {
-    id: 1,
-    group: "A",
-    country: "Spain",
-    name: "Real Madrid",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 22, against: 5 },
-  },
-  {
-    id: 2,
-    group: "A",
-    country: "Belgium",
-    name: "Antverpen",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 14, against: 7 },
-  },
-  {
-    id: 3,
-    group: "A",
-    country: "Germany",
-    name: "Bayern Munich",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 12, against: 9 },
-  },
-  {
-    id: 4,
-    group: "A",
-    country: "Ukraine",
-    name: "Shakhtar Donetsk",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 11, against: 12 },
-  },
-  {
-    id: 5,
-    group: "B",
-    country: "Spain",
-    name: "Barcelona",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 22, against: 5 },
-  },
-  {
-    id: 6,
-    group: "B",
-    country: "Italy",
-    name: "Napoli",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 14, against: 7 },
-  },
-  {
-    id: 7,
-    group: "B",
-    country: "Germany",
-    name: "Borussia D",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 12, against: 9 },
-  },
-  {
-    id: 8,
-    group: "B",
-    country: "Ukraine",
-    name: "Dynamo Kyiv",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 11, against: 12 },
-  },
-  {
-    id: 9,
-    group: "C",
-    country: "Spain",
-    name: "Sevilla",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 22, against: 5 },
-  },
-  {
-    id: 10,
-    group: "C",
-    country: "France",
-    name: "PSG",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 14, against: 7 },
-  },
-  {
-    id: 11,
-    group: "C",
-    country: "Germany",
-    name: "Bayern",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 12, against: 9 },
-  },
-  {
-    id: 12,
-    group: "C",
-    country: "Ukraine",
-    name: "Dnipro",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 11, against: 12 },
-  },
-  {
-    id: 13,
-    group: "D",
-    country: "Spain",
-    name: "Sevilla",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 22, against: 5 },
-  },
-  {
-    id: 14,
-    group: "D",
-    country: "France",
-    name: "PSG",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 14, against: 7 },
-  },
-  {
-    id: 15,
-    group: "D",
-    country: "Germany",
-    name: "Bayern",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 12, against: 9 },
-  },
-  {
-    id: 16,
-    group: "D",
-    country: "Ukraine",
-    name: "Dnipro",
-    played: 6,
-    win: 3,
-    draw: 2,
-    lose: 1,
-    goals: { for: 11, against: 12 },
-  },
-];
-const groups = ["A", "B", "C", "D"];
+const source = {
+  groups: ["a", "b", "c"],
+  teams: [
+    {
+      id: 1,
+      group: "a",
+      country: "Spain",
+      name: "Real Madrid",
+      played: 6,
+      win: 3,
+      draw: 2,
+      lose: 1,
+      goals: { for: 22, against: 5 },
+      owner: "Sasha",
+    },
+    {
+      id: 2,
+      group: "a",
+      country: "Belgium",
+      name: "Antverpen",
+      played: 6,
+      win: 3,
+      draw: 2,
+      lose: 1,
+      goals: { for: 14, against: 7 },
+      owner: "Pasha",
+    },
+    {
+      id: 3,
+      group: "a",
+      country: "Germany",
+      name: "Bayern Munich",
+      played: 6,
+      win: 3,
+      draw: 2,
+      lose: 1,
+      goals: { for: 12, against: 9 },
+      owner: "Sasha",
+    },
+    {
+      id: 4,
+      group: "a",
+      country: "Ukraine",
+      name: "Shakhtar Donetsk",
+      played: 0,
+      win: 0,
+      draw: 0,
+      lose: 0,
+      goals: { for: 0, against: 0 },
+      owner: "Pasha",
+    },
+    {
+      id: 5,
+      group: "b",
+      country: "Ukraine",
+      name: "Shakhtar Donetsk",
+      played: 0,
+      win: 0,
+      draw: 0,
+      lose: 0,
+      goals: { for: 0, against: 0 },
+      owner: "",
+    },
+  ],
+};
 
+let data = null;
 const root = document.querySelector(".root");
 
-renderTable();
-renderGroup();
+const save = (key, value) => {
+  try {
+    const serializedState = JSON.stringify(value);
+    localStorage.setItem(key, serializedState);
+  } catch (error) {
+    console.error("Set state error: ", error.message);
+  }
+};
+const load = (key) => {
+  try {
+    const serializedState = localStorage.getItem(key);
+    return serializedState === null ? undefined : JSON.parse(serializedState);
+  } catch (error) {
+    console.error("Get state error: ", error.message);
+  }
+};
 
-const a = roundRobin(takeTeamName("A"));
-const b = roundRobin(takeTeamName("B"));
-const c = roundRobin(takeTeamName("C"));
-const d = roundRobin(takeTeamName("D"));
+if (localStorage.length === 0) {
+  save("data", source);
+} else {
+  data = { ...load("data") };
+  renderTable();
+  data.groups.forEach((gr) => {
+    renderGroup(gr);
+    const rounds = roundRobin(filteredTeamsNameByGroup(gr));
+    console.log(rounds);
+    //  rounds.length === 6 ? save(`matches-${gr}`, rounds) : [];
+    renderMatches(rounds, gr);
+  });
+}
 
-for (let i = 0; i < a.length; i++) {
-  renderMatches(a[i], "A");
-  renderMatches(b[i], "B");
-  renderMatches(c[i], "C");
-  renderMatches(d[i], "D");
+function filteredTeamsNameByGroup(group) {
+  return data.teams.filter((t) => t.group === group).map((t) => t.name);
 }
 
 function renderTable() {
-  const markup = groups.map((g) => {
-    return `<div class="group" >
+  const markup = data.groups
+    .map((gr) => {
+      return `<div class="group" >
       <div >
-		<h3 class="heading">Group ${g}</h3>
-      <table data-group="${g}">
+		<h3 class="heading">Group ${gr}</h3>
+      <table data-group="${gr}">
 		<tr class="col">
 		<th>Team</th>
 		<th>P</th>
@@ -213,20 +121,19 @@ function renderTable() {
 		</tr>
       </table>
 		</div>
-		<ul data-list="${g}">
+		<ul data-list="${gr}">
 		</ul>
 		</div>
 		`;
-  });
-
-  root.insertAdjacentHTML("beforeend", markup.join(""));
+    })
+    .join("");
+  root.insertAdjacentHTML("beforeend", markup);
 }
-
-function renderGroup() {
-  groups.map((gr) => {
-    const markup = teams.map((t) => {
-      if (gr === t.group) {
-        return `<tr class="wpos">
+function renderGroup(group) {
+  const markup = data.teams
+    .filter((t) => t.group === group)
+    .map((t) => {
+      return `<tr class= ${t.owner === "Sasha" ? "sasha" : "pasha"}>
 		<td>${t.name}</td>
 		<td>${t.played}</td>
 		<td>${t.win}</td>
@@ -236,23 +143,11 @@ function renderGroup() {
 			 <td>${t.goals.against}</td>
 			 <td>${t.win * 3 + t.draw * 1}</td>
         </tr>`;
-      }
     });
-    document
-      .querySelector(`table[data-group="${gr}"]`)
-      .insertAdjacentHTML("beforeend", markup.join(""));
-  });
-}
-
-function renderMatches(teams, letter) {
-  const markup = teams.map((t) => {
-    return `<li>${t[0]}  <span class="home">0</span> - <span class="away">2	</span>  ${t[1]}</li>`;
-  });
   document
-    .querySelector(`ul[data-list='${letter}']`)
+    .querySelector(`table[data-group="${group}"]`)
     .insertAdjacentHTML("beforeend", markup.join(""));
 }
-
 function roundRobin(teams) {
   let schedule = [];
   let league = teams.slice();
@@ -276,38 +171,40 @@ function roundRobin(teams) {
     }
     league.splice(1, 0, league.pop());
   }
-  return schedule;
-}
-function takeTeamName(l) {
-  return teams.map((t) => (t.group === l ? t.name : ""));
-}
 
-let score = 0;
+  const matches = [];
 
-function onMatchClick(e) {
-  let home = e.target.closest("li").querySelector(".home");
-  let away = e.target.closest("li").querySelector(".away");
-  score = prompt();
-  home.textContent = score.split("-")[0];
-  away.textContent = score.split("-")[1];
+  schedule.map((m) =>
+    m.map((r) => {
+      const z = {
+        id: getID(),
+        match: [r[0], r[1]],
+        score: [0, 0],
+      };
+      matches.push(z);
+    })
+  );
+
+  return matches;
 }
-const list = document.querySelectorAll("ul");
-list.forEach((el) => {
-  el.addEventListener("click", onMatchClick);
-});
-
-function checkWinner() {
-  const home = document.querySelectorAll(".home");
-  const away = document.querySelectorAll(".away");
-
-  for (let i = 0; i < home.length; i++) {
-    if (home[i].textContent > away[i].textContent) {
-      home[i].classList.add("winner");
-      away[i].classList.add("loser");
-    } else if (home[i].textContent < away[i].textContent) {
-      away[i].classList.add("winner");
-      home[i].classList.add("loser");
-    }
-  }
+function renderMatches(teams, group) {
+  const markup = teams.map((t) => {
+    return `<li class="match" id=""><p><span data-team="home">${t[0]}</span>  <span class="home">0</span> - <span class="away">0</span>  <span data-team="away">${t[1]}</span></p><div class="modal">
+  <div class="modal-content">
+       <form>
+      <input type="number" name="home" placeholder="${t[0]}">
+      <span> - </span>
+      <input type="number" name="away" placeholder="${t[1]}" />
+      <button type="submit">OK</button>
+		</form>	
+  </div>
+</div>
+</li>`;
+  });
+  document
+    .querySelector(`ul[data-list='${group}']`)
+    .insertAdjacentHTML("beforeend", markup.join(""));
 }
-checkWinner();
+function getID() {
+  return "id" + Math.random().toString(16).slice(2);
+}
