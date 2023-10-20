@@ -133,6 +133,7 @@ if (localStorage.length === 0) {
     renderMatches(gr);
   });
 }
+checkWinner();
 
 function filteredTeamsNameByGroup(group) {
   return data.teams.filter((t) => t.group === group).map((t) => t.name);
@@ -212,9 +213,9 @@ function roundRobin(teams) {
   schedule.map((m) =>
     m.map((r) => {
       const z = {
-        id: getID(),
         match: [r[0], r[1]],
-        score: [0, 0],
+        score: ["", ""],
+        finished: false,
       };
       matches.push(z);
     })
@@ -226,7 +227,7 @@ function renderMatches(group) {
   const matches = load(`matches-${group}`);
 
   const markup = matches.map((t) => {
-    return `<li class="match" data-group=${group}><p><span data-team="home">${t.match[0]}</span>  <span class="home">${t.score[0]}</span> - <span class="away">${t.score[1]}</span>  <span data-team="away">${t.match[1]}</span></p><div class="modal">
+    return `<li class="match" data-group=${group}><p><span data-team="home">${t.match[0]}</span>  (<span class="home">${t.score[0]}</span> - <span class="away">${t.score[1]}</span>)  <span data-team="away">${t.match[1]}</span></p><div class="modal">
     <div class="modal-content">
          <form>
         <input type="number" name="home" placeholder="${t.match[0]}">
@@ -274,12 +275,14 @@ function handleSubmit(event) {
   const teamAway = form.closest("li").querySelector("span[data-team='away']");
   const group = form.closest("li").dataset.group;
   const matches = load(`matches-${group}`);
-  const home = form.elements.home.value;
-  const away = form.elements.away.value;
+
+  const home = Number(form.elements.home.value) || 0;
+  const away = Number(form.elements.away.value) || 0;
 
   const match = {
     match: [teamHome.textContent, teamAway.textContent],
-    score: [Number(home) || 0, Number(away) || 0],
+    score: [home, away],
+    finished: true,
   };
   const index = matches.findIndex(
     (m) =>
@@ -288,4 +291,101 @@ function handleSubmit(event) {
   matches.splice(index, 1, match);
   save(`matches-${group}`, matches);
   renderMatches(group);
+  checkWinner();
+  matchStats(match.match, match.score);
+}
+function checkWinner() {
+  const homeScore = document.querySelectorAll(".home");
+  const awayScore = document.querySelectorAll(".away");
+  const homeTeam = document.querySelectorAll("span[data-team='home']");
+  const awayTeam = document.querySelectorAll("span[data-team='away']");
+
+  for (let i = 0; i < homeScore.length; i++) {
+    if (homeScore[i].textContent > awayScore[i].textContent) {
+      homeScore[i].classList.add("winner");
+      awayScore[i].classList.add("loser");
+      homeTeam[i].classList.add("winner");
+      awayTeam[i].classList.add("loser");
+    } else if (homeScore[i].textContent < awayScore[i].textContent) {
+      awayScore[i].classList.add("winner");
+      homeScore[i].classList.add("loser");
+      homeTeam[i].classList.add("loser");
+      awayTeam[i].classList.add("winner");
+    } else if (
+      homeScore[i].textContent &&
+      awayScore[i].textContent &&
+      homeScore[i].textContent === awayScore[i].textContent
+    ) {
+      homeScore[i].classList.add("draw");
+      awayScore[i].classList.add("draw");
+      homeTeam[i].classList.add("draw");
+      awayTeam[i].classList.add("draw");
+    }
+  }
+}
+function matchStats(match, score) {
+  const oldStats = load("stats") || [];
+  const stats = [];
+
+  const teamStat1 = countStats(match, score)[0];
+  const teamStat2 = countStats(match, score)[1];
+
+  const teamInList1 = oldStats.find((i) => i.team === teamStat1.team);
+  const teamInList2 = oldStats.find((i) => i.team === teamStat2.team);
+
+  console.log(teamInList1);
+
+  if (!teamInList1) {
+    stats.push(teamStat1);
+  } else {
+  }
+  if (!teamInList2) {
+    stats.push(teamStat2);
+  }
+
+  save("stats", [...oldStats, ...stats]);
+}
+function checkTeamInList(list, team) {
+  return list.find((i) => i.team === team);
+}
+function countStats(match, score) {
+  const t1 = {
+    team: match[0],
+    played: 0,
+    win: 0,
+    draw: 0,
+    lose: 0,
+    goals: { for: 0, against: 0 },
+  };
+  const t2 = {
+    team: match[1],
+    played: 0,
+    win: 0,
+    draw: 0,
+    lose: 0,
+    goals: { for: 0, against: 0 },
+  };
+
+  if (score[0] > score[1]) {
+    t1.played++;
+    t2.played++;
+    t1.win++;
+    t2.lose++;
+  } else if (score[0] < score[1]) {
+    t1.played++;
+    t2.played++;
+    t1.lose++;
+    t2.win++;
+  } else if (score[0] === score[1]) {
+    t1.played++;
+    t2.played++;
+    t1.draw++;
+    t2.draw++;
+  }
+  t1.goals.for = score[0];
+  t1.goals.against = score[1];
+  t2.goals.for = score[1];
+  t2.goals.against = score[0];
+
+  return [t1, t2];
 }

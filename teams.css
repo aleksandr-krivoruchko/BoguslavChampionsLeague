@@ -76,15 +76,14 @@ tr:hover td {
   justify-content: space-around;
   align-items: center;
 }
-.home,
-.away {
-  color: yellow;
-}
 .winner {
   color: #77ff21;
 }
 .loser {
   color: red;
+}
+.draw {
+  color: #ffe221;
 }
 li {
   padding: 2px;
