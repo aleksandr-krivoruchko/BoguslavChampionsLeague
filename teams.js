@@ -6,12 +6,11 @@ const source = {
       group: "a",
       country: "Spain",
       name: "Real Madrid",
-      img: "./img/real.png",
-      played: 6,
-      win: 3,
-      draw: 2,
-      lose: 1,
-      goals: { for: 22, against: 5 },
+      played: 0,
+      win: 0,
+      draw: 0,
+      lose: 0,
+      goals: { for: 0, against: 0 },
       owner: "Sasha",
     },
     {
@@ -19,11 +18,11 @@ const source = {
       group: "a",
       country: "Belgium",
       name: "Antverpen",
-      played: 6,
-      win: 3,
-      draw: 2,
-      lose: 1,
-      goals: { for: 14, against: 7 },
+      played: 0,
+      win: 0,
+      draw: 0,
+      lose: 0,
+      goals: { for: 0, against: 0 },
       owner: "Pasha",
     },
     {
@@ -31,11 +30,11 @@ const source = {
       group: "a",
       country: "Germany",
       name: "Bayern Munich",
-      played: 6,
-      win: 3,
-      draw: 2,
-      lose: 1,
-      goals: { for: 12, against: 9 },
+      played: 0,
+      win: 0,
+      draw: 0,
+      lose: 0,
+      goals: { for: 0, against: 0 },
       owner: "Sasha",
     },
     {
@@ -184,20 +183,20 @@ function renderTable() {
 }
 
 function renderGroup(group) {
-  console.log("render group");
-
   const markup = data.teams
     .filter((t) => t.group === group)
     .map((t) => {
-      return `<tr class= ${t.owner === "Sasha" ? "sasha" : "pasha"}>
-		<td><img src='${t.img}' width="30px"/>  ${t.name}</td>
-		<td>${t.played}</td>
-		<td>${t.win}</td>
-		<td>${t.draw}</td>
-          <td>${t.lose}</td>
-			 <td>${t.goals.for}</td>
-			 <td>${t.goals.against}</td>
-			 <td>${t.win * 3 + t.draw * 1}</td>
+      return `<tr class= ${
+        t.owner === "Sasha" ? "sasha" : "pasha"
+      } data-team="${t.name}">
+		<td>${t.name}</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
         </tr>`;
     });
   document
@@ -274,6 +273,30 @@ function renderMatches(group) {
   });
 }
 
+function renderGroupStats(group) {
+  const stats = load("stats") || [];
+
+  console.log(stats);
+
+  const markup = stats.map((t) => {
+    console.log(t);
+    return `<tr class= ${t.owner === "Sasha" ? "sasha" : "pasha"} data-team="${
+      t.team
+    }">
+		<td>${t.team}</td>
+      <td>${t.played}</td>
+		<td>${t.win}</td>
+		<td>${t.draw}</td>
+          <td>${t.lose}</td>
+			 <td>${t.goals.for}</td>
+			 <td>${t.goals.against}</td>
+			 <td>${t.win * 3 + t.draw * 1}</td></tr>`;
+  });
+  document
+    .querySelector(`table[data-group="${group}"]`)
+    .insertAdjacentHTML("beforeend", markup.join(""));
+}
+
 function getID() {
   return "id" + Math.random().toString(16).slice(2);
 }
@@ -307,6 +330,7 @@ function handleSubmit(event) {
   const away = Number(form.elements.away.value) || 0;
 
   const match = {
+    group,
     match: [teamHome.textContent, teamAway.textContent],
     score: [home, away],
     finished: true,
@@ -320,6 +344,8 @@ function handleSubmit(event) {
   renderMatches(group);
   checkWinner();
   matchStats(match.match, match.score);
+  reRenderStats(teamHome.textContent);
+  reRenderStats(teamAway.textContent);
 }
 
 function checkWinner() {
@@ -431,6 +457,7 @@ function countStats(match, score) {
 
 function updateStats(oldGame, newGame) {
   const updateGame = {
+    group: oldGame.group,
     team: oldGame.team,
     played: oldGame.played + newGame.played,
     win: newGame.win > 0 ? oldGame.win + newGame.win : oldGame.win,
@@ -442,4 +469,21 @@ function updateStats(oldGame, newGame) {
     },
   };
   return updateGame;
+}
+
+function reRenderStats(name) {
+  const stats = load("stats");
+
+  const markup = stats
+    .filter((t) => t.team === name)
+    .map((t) => {
+      return `<td>${t.team}</td><td>${t.played}</td>
+		<td>${t.win}</td>
+		<td>${t.draw}</td>
+          <td>${t.lose}</td>
+			 <td>${t.goals.for}</td>
+			 <td>${t.goals.against}</td>
+			 <td>${t.win * 3 + t.draw * 1}</td>`;
+    });
+  document.querySelector(`tr[data-team='${name}']`).innerHTML = markup.join("");
 }
