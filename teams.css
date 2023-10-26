@@ -21,8 +21,7 @@ table {
 th,
 td {
   padding: 10px;
-  width: 30px;
-  height: 30px;
+  height: 40px;
   border-bottom: 1px solid grey;
   border-right: 1px solid grey;
 }
@@ -32,13 +31,23 @@ th {
   color: #ffe221;
 }
 
+li {
+  padding: 2px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+li:hover {
+  background-color: gray;
+}
+
 .heading {
   display: block;
   font-size: 26px;
   text-align: center;
   text-decoration: none;
+  text-transform: uppercase;
   color: #ffe221;
-  margin: 20px;
+  margin: 10px;
 }
 
 .sasha {
@@ -52,9 +61,13 @@ th {
   cursor: pointer;
 }
 
-.sasha td {
+/* .sasha td {
   color: #77ff21;
 }
+.pasha td {
+  color: #f55ec8;
+} */
+
 .www {
   background-color: inherit;
 }
@@ -84,14 +97,6 @@ tr:hover td {
 }
 .draw {
   color: #ffe221;
-}
-li {
-  padding: 2px;
-  margin-bottom: 2px;
-  cursor: pointer;
-}
-li:hover {
-  background-color: gray;
 }
 
 .modal {
@@ -153,3 +158,12 @@ form span {
 .close {
   display: none;
 }
+
+/* .modal-sp {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  right: 15%;
+  top: 10%;
+  width: 40%;
+} */
