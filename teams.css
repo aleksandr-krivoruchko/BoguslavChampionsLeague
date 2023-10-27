@@ -159,11 +159,10 @@ form span {
   display: none;
 }
 
-/* .modal-sp {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  right: 15%;
-  top: 10%;
-  width: 40%;
-} */
+.home-box,
+.away-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
