@@ -5,34 +5,50 @@
   padding: 0;
   color: white;
 }
+.root {
+  width: 1000px;
+  height: auto;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+}
 ul {
   list-style: none;
 }
+
 html {
-  background-color: #000000;
+  background-image: url("./img/V9vd13A-uefa-champions-league-wallpaper.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 table {
-  margin: 30px auto;
+  width: 600px;
+  margin-bottom: 30px;
+  margin-right: 50px;
   border-collapse: collapse;
-  border: 1px solid grey;
+  border: 1px solid yellowgreen;
+  cursor: pointer;
 }
 
 th,
 td {
   padding: 10px;
   height: 40px;
-  border-bottom: 1px solid grey;
-  border-right: 1px solid grey;
+  border-bottom: 1px solid yellowgreen;
+  border-right: 1px solid yellowgreen;
+  font-size: 20px;
+  text-align: center;
 }
 
 th {
-  background-color: black;
   color: #ffe221;
+  font-size: 14px;
 }
 
 li {
-  padding: 2px;
+  padding: 3px;
   margin-bottom: 2px;
   cursor: pointer;
 }
@@ -42,12 +58,12 @@ li:hover {
 
 .heading {
   display: block;
-  font-size: 26px;
+  font-size: 20px;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
   color: #ffe221;
-  margin: 10px;
+  margin-bottom: 10px;
 }
 
 .sasha {
@@ -60,33 +76,12 @@ li:hover {
   background-color: #7e6250;
   cursor: pointer;
 }
-
-/* .sasha td {
-  color: #77ff21;
-}
-.pasha td {
-  color: #f55ec8;
-} */
-
 .www {
   background-color: inherit;
 }
 
-table .col {
-  border-bottom: 1px solid #ffffff;
-}
-
-tr:hover {
-  background-color: #77ff21;
-}
-
-tr:hover td {
-  color: #000000;
-}
-
 .group {
   display: flex;
-  justify-content: space-around;
   align-items: center;
 }
 .winner {
@@ -103,40 +98,41 @@ tr:hover td {
   display: none;
   position: fixed;
   z-index: 1;
-  right: 15%;
-  top: 10%;
-  width: 40%;
-  /* height: 100%; 
-  overflow: auto; 
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);  */
+  right: 30%;
+  top: 30%;
 }
 
 .modal-content {
-  background-color: #97dd55;
+  height: 70px;
+  background-color: darkgreen;
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #fff;
+  border-radius: 10px;
 }
-form {
+.modal form {
   display: flex;
   justify-content: space-around;
   align-items: baseline;
 }
-input {
+.modal input {
   padding: 5px;
   margin-bottom: 10px;
   color: #06770c;
   font-size: 18px;
   outline-color: #06770c;
 }
-form span {
+.modal form span {
   font-size: 25px;
   color: #000000;
   margin-left: 5px;
   margin-right: 5px;
 }
-.modal button {
+.modal .modal-btn {
+  position: absolute;
+  bottom: 35%;
+}
+.btn {
   padding: 10px;
   margin-left: 10px;
   text-align: center;
@@ -146,10 +142,12 @@ form span {
   color: #fff;
   font-size: 14px;
   cursor: pointer;
+  outline: none;
 }
-.modal button:hover {
-  color: #06770c;
-  border-color: #06770c;
+
+.btn:hover {
+  color: yellow;
+  border-color: yellow;
 }
 
 .open {
@@ -159,10 +157,24 @@ form span {
   display: none;
 }
 
-.home-box,
+/* .home-box,
 .away-box {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+} */
+div[data-modal="table"] .modal-content {
+  height: auto;
+  font-size: 24px;
+  color: #fff;
+  text-align: center;
+}
+.modal-content .title {
+  color: #fff;
+  margin-right: 20px;
+}
+.table-btn {
+  display: block;
+  margin: 0 auto;
 }

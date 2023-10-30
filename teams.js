@@ -6,96 +6,48 @@ const source = {
       group: "a",
       country: "Spain",
       name: "Real Madrid",
-      played: 0,
-      win: 0,
-      draw: 0,
-      lose: 0,
-      goals: { for: 0, against: 0 },
-      owner: "",
     },
     {
       id: 2,
       group: "a",
       country: "Belgium",
       name: "Antverpen",
-      played: 0,
-      win: 0,
-      draw: 0,
-      lose: 0,
-      goals: { for: 0, against: 0 },
-      owner: "",
     },
     {
       id: 3,
       group: "a",
       country: "Germany",
       name: "Bayern Munich",
-      played: 0,
-      win: 0,
-      draw: 0,
-      lose: 0,
-      goals: { for: 0, against: 0 },
-      owner: "",
     },
     {
       id: 4,
       group: "a",
       country: "Ukraine",
       name: "Shakhtar Donetsk",
-      played: 0,
-      win: 0,
-      draw: 0,
-      lose: 0,
-      goals: { for: 0, against: 0 },
-      owner: "",
     },
     {
       id: 5,
       group: "b",
       country: "Ukraine",
-      name: "Shakhtar Donetsk",
-      played: 0,
-      win: 0,
-      draw: 0,
-      lose: 0,
-      goals: { for: 0, against: 0 },
-      owner: "",
+      name: "Napoli",
     },
     {
       id: 6,
       group: "b",
       country: "Ukraine",
-      name: "Shakhtar Donetsk",
-      played: 0,
-      win: 0,
-      draw: 0,
-      lose: 0,
-      goals: { for: 0, against: 0 },
-      owner: "",
+      name: "Barcelona",
     },
     {
       id: 7,
       group: "b",
       country: "Ukraine",
-      name: "Shakhtar Donetsk",
-      played: 0,
-      win: 0,
-      draw: 0,
-      lose: 0,
-      goals: { for: 0, against: 0 },
-      owner: "",
+      name: "Dnipro",
     },
     {
       id: 8,
       group: "b",
       country: "Ukraine",
-      name: "Shakhtar Donetsk",
-      played: 0,
-      win: 0,
-      draw: 0,
-      lose: 0,
-      goals: { for: 0, against: 0 },
-      owner: "",
+      name: "Benfica",
     },
   ],
 };
@@ -121,11 +73,8 @@ const load = (key) => {
 };
 
 if (localStorage.length === 0) {
-  //   console.log("first record to local storage");
   save("data", source);
   data = Object.assign({}, source);
-
-  //   console.log(data);
   renderTable();
 
   data.groups.forEach((gr) => {
@@ -134,11 +83,10 @@ if (localStorage.length === 0) {
     const rounds = roundRobin(filteredTeamsNameByGroup(gr));
     const matches = load(`matches-${gr}`);
     !matches && save(`matches-${gr}`, rounds);
+
     renderMatches(gr);
-    //  renderTableModal(gr);
   });
 } else {
-  //   console.log("get data from local storage");
   data = { ...load("data") };
   renderTable();
   data.groups.forEach((gr) => {
@@ -160,7 +108,7 @@ function renderTable() {
     const teams = data.teams.filter((t) => t.group === gr).map((t) => t.name);
     return `<div class="group" >
       <div>
-		<h3 class="heading">Group ${gr}</h3>
+		<h3 class="heading">Группа ${gr}</h3>
       <table data-group="${gr}">
 		<tr class="col">
 		<th>Команда</th>
@@ -174,48 +122,48 @@ function renderTable() {
 		<th>Игрок	</th>
 		</tr>
       </table>
-		 <div class="modal" data-modal="table" id="${gr}">
+		 <div class="modal" data-modal="table">
 		<div class="modal-content">
         <form>
           <ul>
             <li>
-              <p class="title">${teams[0]}</p>
+              <span class="title">${teams[0]}</span>
               <label>
-                <input type="radio" name="${teams[0]}" value="sasha" />C
+                <input type="radio" name="${teams[0]}" value="С" />C
               </label>
               <label>
-                <input type="radio" name="${teams[0]}" value="pasha" />П
-              </label>
-            </li>
-            <li>
-              <p class="title">${teams[1]}</p>
-              <label>
-                <input type="radio" name="${teams[1]}" value="sasha" />C
-              </label>
-              <label>
-                <input type="radio" name="${teams[1]}" value="pasha" />П
+                <input type="radio" name="${teams[0]}" value="П" />П
               </label>
             </li>
             <li>
-              <p class="title">${teams[2]}</p>
+              <span class="title">${teams[1]}</span>
               <label>
-                <input type="radio" name="${teams[2]}" value="sasha" />C
+                <input type="radio" name="${teams[1]}" value="С" />C
               </label>
               <label>
-                <input type="radio" name="${teams[2]}" value="pasha" />П
+                <input type="radio" name="${teams[1]}" value="П" />П
               </label>
             </li>
             <li>
-              <p class="title">${teams[3]}</p>
+              <span class="title">${teams[2]}</span>
               <label>
-                <input type="radio" name="${teams[3]}" value="sasha" />C
+                <input type="radio" name="${teams[2]}" value="С" />C
               </label>
               <label>
-                <input type="radio" name="${teams[3]}" value="pasha" />П
+                <input type="radio" name="${teams[2]}" value="П" />П
               </label>
             </li>
+            <li>
+              <span class="title">${teams[3]}</span>
+              <label>
+                <input type="radio" name="${teams[3]}" value="С" />C
+              </label>
+              <label>
+                <input type="radio" name="${teams[3]}" value="П" />П
+              </label>
+            </li>
+				<button type="submit" class="btn table-btn">OK</button>
           </ul>
-          <button type="submit">OK</button>
         </form>
 		</div>
 		</div>
@@ -330,7 +278,7 @@ function renderMatches(group) {
         П
       </label>
 		</div>
-        <button type="submit">OK</button>
+        <button type="submit" class="btn modal-btn">OK</button>
   		</form>
     </div>
   </div>
@@ -345,7 +293,6 @@ function renderGroupStats(group) {
   const stats = load("stats") || [];
 
   const markup = stats.map((t) => {
-    console.log(t);
     return `<tr data-team="${t.team}">
 		<td>${t.team}</td>
       <td>${t.played}</td>
@@ -394,14 +341,14 @@ function handleSubmit(event) {
   const players = load("players") || [];
   const home = Number(form.elements.home.value) || 0;
   const away = Number(form.elements.away.value) || 0;
-  const homePlayer = form.elements.homePlayer.value;
-  const awayPlayer = form.elements.awayPlayer.value;
+  const homePlayer = players.find((i) => i.team === teamHome.textContent);
+  const awayPlayer = players.find((i) => i.team === teamAway.textContent);
 
   const match = {
     match: [teamHome.textContent, teamAway.textContent],
     score: [home, away],
     finished: true,
-    player: [homePlayer, awayPlayer],
+    player: [homePlayer?.player, awayPlayer?.player],
   };
   const index = matches.findIndex(
     (m) =>
@@ -456,14 +403,10 @@ function matchStats({ match, score, player }) {
   const teamInList2 = stats.find((i) => i.team === teamStat2.team);
   const index2 = stats.findIndex((i) => i.team === teamStat2.team);
 
-  //   console.log("teamInList1", teamInList1);
-  //   console.log("teamStat1", teamStat1);
-
   if (!teamInList1) {
     stats.push(teamStat1);
   } else {
     const updateTeamStat1 = updateStats(teamInList1, teamStat1);
-    //  console.log("updateTeamStat1", updateTeamStat1);
     stats.splice(index1, 1, updateTeamStat1);
   }
 
@@ -631,16 +574,22 @@ function tableModalOpen(e) {
 
 function tableModalClose() {
   const modal = document.querySelector("div[data-modal='table'].open");
+
   modal.classList.replace("open", "close");
 }
 
 function tableModalHandlerSubmit(event) {
   event.preventDefault();
 
-  const players = [];
+  const players = load("players") || [];
   const form = event.target;
 
-  new FormData(form).forEach((value, name) => players.push({ [name]: value }));
+  new FormData(form).forEach((value, name) =>
+    players.push({
+      team: name,
+      player: value,
+    })
+  );
 
   save("players", players);
 }
