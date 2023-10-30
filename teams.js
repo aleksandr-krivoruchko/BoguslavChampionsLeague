@@ -1,5 +1,5 @@
 const source = {
-  groups: ["a"],
+  groups: ["a", "b"],
   teams: [
     {
       id: 1,
@@ -130,11 +130,12 @@ if (localStorage.length === 0) {
 
   data.groups.forEach((gr) => {
     renderGroup(gr);
-    //  renderTableModal(gr);
+
     const rounds = roundRobin(filteredTeamsNameByGroup(gr));
     const matches = load(`matches-${gr}`);
     !matches && save(`matches-${gr}`, rounds);
     renderMatches(gr);
+    //  renderTableModal(gr);
   });
 } else {
   //   console.log("get data from local storage");
@@ -156,8 +157,9 @@ function filteredTeamsNameByGroup(group) {
 
 function renderTable() {
   const markup = data.groups.map((gr) => {
+    const teams = data.teams.filter((t) => t.group === gr).map((t) => t.name);
     return `<div class="group" >
-      <div >
+      <div>
 		<h3 class="heading">Group ${gr}</h3>
       <table data-group="${gr}">
 		<tr class="col">
@@ -172,7 +174,50 @@ function renderTable() {
 		<th>Игрок	</th>
 		</tr>
       </table>
-       <div data-modal="${gr}">
+		 <div class="modal" data-modal="table" id="${gr}">
+		<div class="modal-content">
+        <form>
+          <ul>
+            <li>
+              <p class="title">${teams[0]}</p>
+              <label>
+                <input type="radio" name="${teams[0]}" value="sasha" />C
+              </label>
+              <label>
+                <input type="radio" name="${teams[0]}" value="pasha" />П
+              </label>
+            </li>
+            <li>
+              <p class="title">${teams[1]}</p>
+              <label>
+                <input type="radio" name="${teams[1]}" value="sasha" />C
+              </label>
+              <label>
+                <input type="radio" name="${teams[1]}" value="pasha" />П
+              </label>
+            </li>
+            <li>
+              <p class="title">${teams[2]}</p>
+              <label>
+                <input type="radio" name="${teams[2]}" value="sasha" />C
+              </label>
+              <label>
+                <input type="radio" name="${teams[2]}" value="pasha" />П
+              </label>
+            </li>
+            <li>
+              <p class="title">${teams[3]}</p>
+              <label>
+                <input type="radio" name="${teams[3]}" value="sasha" />C
+              </label>
+              <label>
+                <input type="radio" name="${teams[3]}" value="pasha" />П
+              </label>
+            </li>
+          </ul>
+          <button type="submit">OK</button>
+        </form>
+		</div>
 		</div>
 		</div>
 		<ul data-list="${gr}">
@@ -206,9 +251,7 @@ function renderGroup(group) {
     });
   const table = document.querySelector(`table[data-group="${group}"]`);
   table.insertAdjacentHTML("beforeend", markup.join(""));
-
-  const modal = document.querySelector(`div[data-modal="${group}"]`);
-  modal.closest(".group").addEventListener("click", modalSashaPashaOpen);
+  table.addEventListener("click", tableModalOpen);
 }
 
 function roundRobin(teams) {
@@ -260,9 +303,10 @@ function renderMatches(group) {
     const teamHome = t.match[0];
     const teamAway = t.match[1];
 
-    return `<li class="match" data-group=${group}><p><span data-team="home">${teamHome}</span>  (<span class="home">${scoreHome}</span> : <span class="away">${scoreAway}</span>)  <span data-team="away">${teamAway}</span></p><div class="modal">
+    return `<li class="match" data-group=${group}><p><span data-team="home">${teamHome}</span>  (<span class="home">${scoreHome}</span> : <span class="away">${scoreAway}</span>)  <span data-team="away">${teamAway}</span></p>
+	 <div class="modal" data-modal="match">
     <div class="modal-content">
-         <form>
+         <form class="modal-form">
         <div class="home-box">
 		 <input type="number" name="home" placeholder="${teamHome}" min="0">
 		 <label>
@@ -292,12 +336,9 @@ function renderMatches(group) {
   </div>
   </li>`;
   });
-  document.querySelector(`ul[data-list='${group}']`).innerHTML =
-    markup.join("");
-  const list = document.querySelectorAll("li");
-  list.forEach((el) => {
-    el.addEventListener("click", modalOpen);
-  });
+  const list = document.querySelector(`ul[data-list='${group}']`);
+  list.innerHTML = markup.join("");
+  list.addEventListener("click", modalOpen);
 }
 
 function renderGroupStats(group) {
@@ -327,8 +368,8 @@ function getID() {
 }
 
 function modalOpen(e) {
-  const modal = e.target.closest("li").querySelector(".modal");
-  const form = e.target.closest("li").querySelector("form");
+  const modal = e.target.closest("li").querySelector("div[data-modal='match']");
+  const form = modal.querySelector(".modal-form");
   const closeBtn = form.querySelector("button");
 
   modal.classList.add("open");
@@ -338,7 +379,7 @@ function modalOpen(e) {
 }
 
 function closeModal() {
-  const modal = document.querySelector(".open");
+  const modal = document.querySelector("div[data-modal='match'].open");
   modal.classList.replace("open", "close");
 }
 
@@ -350,6 +391,7 @@ function handleSubmit(event) {
   const teamAway = form.closest("li").querySelector("span[data-team='away']");
   const group = form.closest("li").dataset.group;
   const matches = load(`matches-${group}`);
+  const players = load("players") || [];
   const home = Number(form.elements.home.value) || 0;
   const away = Number(form.elements.away.value) || 0;
   const homePlayer = form.elements.homePlayer.value;
@@ -519,84 +561,86 @@ function reRenderStats(name) {
   document.querySelector(`tr[data-team='${name}']`).innerHTML = markup.join("");
 }
 
-function modalSashaPashaOpen(e) {
-  const modal = e.currentTarget.querySelector(".modal");
-  //   const teamName = e.target.closest("tr").dataset.team;
-  //   const title = e.target.closest(".group").querySelector(".title");
-  //   title.textContent = teamName;
-
-  const form = e.currentTarget.closest(".group").querySelector("form");
-  const closeBtn = form.querySelector("button");
-
-  modal.classList.add("open");
-
-  form.addEventListener("submit", modalSashaPashaSubmit);
-  closeBtn.addEventListener("click", modalSashaPashaClose);
-}
-
-function modalSashaPashaClose() {
-  const modal = document.querySelector(".open");
-
-  //   form.removeEventListener("submit", modalSashaPashaSubmit);
-  console.log(modal);
-  modal.classList.replace("open", "close");
-}
-
-function modalSashaPashaSubmit(event) {
-  event.preventDefault();
-  const form = event.currentTarget;
-  console.log(form.elements);
-}
-
 function renderTableModal(group) {
-  const markup = data.teams
-    .filter((t) => t.group === group)
-    .map((t) => {
-      return `<div class="modal-content">
+  const teams = data.teams.filter((t) => t.group === group).map((t) => t.name);
+
+  const markup = data.groups.map((t) => {
+    return `<div class="modal">
+		<div class="modal-content">
         <form>
           <ul>
             <li>
-              <p class="title">${t.name}</p>
+              <p class="title">${teams[0]}</p>
               <label>
-                <input type="radio" name="owner" value="sasha" />C
+                <input type="radio" name="${teams[0]}" value="sasha" />C
               </label>
               <label>
-                <input type="radio" name="owner" value="pasha" />П
-              </label>
-            </li>
-            <li>
-              <p class="title">${t.name}</p>
-              <label>
-                <input type="radio" name="owner" value="sasha" />C
-              </label>
-              <label>
-                <input type="radio" name="owner" value="pasha" />П
+                <input type="radio" name="${teams[0]}" value="pasha" />П
               </label>
             </li>
             <li>
-              <p class="title">${t.name}</p>
+              <p class="title">${teams[1]}</p>
               <label>
-                <input type="radio" name="owner" value="sasha" />C
+                <input type="radio" name="${teams[1]}" value="sasha" />C
               </label>
               <label>
-                <input type="radio" name="owner" value="pasha" />П
+                <input type="radio" name="${teams[1]}" value="pasha" />П
               </label>
             </li>
             <li>
-              <p class="title">${t.name}</p>
+              <p class="title">${teams[2]}</p>
               <label>
-                <input type="radio" name="owner" value="sasha" />C
+                <input type="radio" name="${teams[2]}" value="sasha" />C
               </label>
               <label>
-                <input type="radio" name="owner" value="pasha" />П
+                <input type="radio" name="${teams[2]}" value="pasha" />П
+              </label>
+            </li>
+            <li>
+              <p class="title">${teams[3]}</p>
+              <label>
+                <input type="radio" name="${teams[3]}" value="sasha" />C
+              </label>
+              <label>
+                <input type="radio" name="${teams[3]}" value="pasha" />П
               </label>
             </li>
           </ul>
           <button type="submit">OK</button>
+			<button type="button" class="close-btn">X</button>
         </form>
-      </div>`;
-    });
+      </div>
+		</div>`;
+  });
   document
-    .querySelector(`table[data-modal="${group}"]`)
+    .querySelector(`div[data-modal="${group}"]`)
     .insertAdjacentHTML("beforeend", markup.join(""));
+}
+
+function tableModalOpen(e) {
+  const group = e.currentTarget.closest(".group");
+  const modal = group.querySelector("div[data-modal='table']");
+  const form = modal.querySelector("form");
+  const closeBtn = modal.querySelector("button");
+
+  modal.classList.add("open");
+
+  form.addEventListener("submit", tableModalHandlerSubmit);
+  closeBtn.addEventListener("click", tableModalClose);
+}
+
+function tableModalClose() {
+  const modal = document.querySelector("div[data-modal='table'].open");
+  modal.classList.replace("open", "close");
+}
+
+function tableModalHandlerSubmit(event) {
+  event.preventDefault();
+
+  const players = [];
+  const form = event.target;
+
+  new FormData(form).forEach((value, name) => players.push({ [name]: value }));
+
+  save("players", players);
 }
