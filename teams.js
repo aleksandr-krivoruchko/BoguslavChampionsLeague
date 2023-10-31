@@ -1,53 +1,165 @@
 const source = {
-  groups: ["a", "b"],
+  groups: ["a", "b", "c", "d", "e", "f", "g", "h"],
   teams: [
     {
       id: 1,
       group: "a",
-      country: "Spain",
-      name: "Real Madrid",
+      name: "Бавария",
     },
     {
       id: 2,
       group: "a",
-      country: "Belgium",
-      name: "Antverpen",
+      name: "Галатасарай",
     },
     {
       id: 3,
       group: "a",
-      country: "Germany",
-      name: "Bayern Munich",
+      name: "Манчестер Юнайтед",
     },
     {
       id: 4,
       group: "a",
-      country: "Ukraine",
-      name: "Shakhtar Donetsk",
+      name: "Копенгаген",
     },
     {
       id: 5,
       group: "b",
-      country: "Ukraine",
-      name: "Napoli",
+      name: "Арсенал",
     },
     {
       id: 6,
       group: "b",
-      country: "Ukraine",
-      name: "Barcelona",
+      name: "Ленс",
     },
     {
       id: 7,
       group: "b",
-      country: "Ukraine",
-      name: "Dnipro",
+      name: "Севилья",
     },
     {
       id: 8,
       group: "b",
-      country: "Ukraine",
-      name: "Benfica",
+      name: "ПСВ",
+    },
+    {
+      id: 9,
+      group: "c",
+      name: "Реал Мадрид",
+    },
+    {
+      id: 10,
+      group: "c",
+      name: "Наполи",
+    },
+    {
+      id: 11,
+      group: "c",
+      name: "Брага",
+    },
+    {
+      id: 12,
+      group: "c",
+      name: "Юнион Берлин",
+    },
+    {
+      id: 13,
+      group: "d",
+      name: "Реал Сосьедад",
+    },
+    {
+      id: 14,
+      group: "d",
+      name: "Интер",
+    },
+    {
+      id: 15,
+      group: "d",
+      name: "Зальцбург",
+    },
+    {
+      id: 16,
+      group: "d",
+      name: "Бенфика",
+    },
+    {
+      id: 17,
+      group: "e",
+      name: "Фейенорд",
+    },
+    {
+      id: 18,
+      group: "e",
+      name: "Атлетико Мадрид",
+    },
+    {
+      id: 19,
+      group: "e",
+      name: "Лацио",
+    },
+    {
+      id: 20,
+      group: "e",
+      name: "Селтик",
+    },
+    {
+      id: 21,
+      group: "f",
+      name: "ПСЖ",
+    },
+    {
+      id: 22,
+      group: "f",
+      name: "Боруссия Дортмунд",
+    },
+    {
+      id: 23,
+      group: "f",
+      name: "Ньюкасл",
+    },
+    {
+      id: 24,
+      group: "f",
+      name: "Милан",
+    },
+    {
+      id: 25,
+      group: "g",
+      name: "Манчестер Сити",
+    },
+    {
+      id: 26,
+      group: "g",
+      name: "Лейпциг",
+    },
+    {
+      id: 27,
+      group: "g",
+      name: "Янг Бойз",
+    },
+    {
+      id: 28,
+      group: "g",
+      name: "Црвена Звезда",
+    },
+    {
+      id: 29,
+      group: "h",
+      name: "Барселона",
+    },
+    {
+      id: 30,
+      group: "h",
+      name: "Порту",
+    },
+    {
+      id: 31,
+      group: "h",
+      name: "Шахтер",
+    },
+    {
+      id: 32,
+      group: "h",
+      name: "Антверпен",
     },
   ],
 };
