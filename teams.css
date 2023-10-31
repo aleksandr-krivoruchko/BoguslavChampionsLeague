@@ -10,14 +10,14 @@
   height: auto;
   margin: 0 auto;
   padding: 20px;
-  background-color: rgba(20, 3, 82, 0.4);
+  background-color: rgba(20, 3, 82, 0.6);
 }
 ul {
   list-style: none;
 }
 
 html {
-  background-image: url("./img/teamspage.jpg");
+  background-image: url("./img/teams-bg.jpg");
   background-repeat: repeat-y;
   background-size: 100vw;
 }
@@ -34,11 +34,12 @@ table {
 th,
 td {
   padding: 10px;
-  height: 40px;
+  height: 50px;
   border-bottom: 1px solid yellowgreen;
   border-right: 1px solid yellowgreen;
   font-size: 20px;
   text-align: center;
+  vertical-align: center;
 }
 
 th {
@@ -46,12 +47,13 @@ th {
   font-size: 14px;
 }
 
-li {
+.match {
   padding: 3px;
   margin-bottom: 2px;
   cursor: pointer;
+  font-size: 18px;
 }
-li:hover {
+.match:hover {
   background-color: gray;
 }
 
@@ -95,6 +97,8 @@ li:hover {
 }
 
 .modal {
+  /* width: 500px;
+  height: 700px; */
   display: none;
   position: fixed;
   z-index: 1;
@@ -105,6 +109,9 @@ li:hover {
 .modal-content {
   height: 70px;
   background-color: darkgreen;
+  background-image: url(img/qqq.jpg);
+  background-position: center;
+  background-size: cover;
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #fff;
@@ -165,10 +172,12 @@ li:hover {
   align-items: center;
 } */
 div[data-modal="table"] .modal-content {
-  height: auto;
+  width: 500px;
+  height: 300px;
   font-size: 24px;
   color: #fff;
   text-align: center;
+  cursor: pointer;
 }
 .modal-content .title {
   color: #fff;
@@ -177,4 +186,13 @@ div[data-modal="table"] .modal-content {
 .table-btn {
   display: block;
   margin: 0 auto;
+}
+
+.team-logo {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.team-logo span {
+  margin-left: 15px;
 }

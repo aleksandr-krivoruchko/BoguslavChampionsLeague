@@ -5,161 +5,193 @@ const source = {
       id: 1,
       group: "a",
       name: "Бавария",
+      logo: "img/logo/bayern.png",
     },
     {
       id: 2,
       group: "a",
       name: "Галатасарай",
+      logo: "img/logo/gala.png",
     },
     {
       id: 3,
       group: "a",
       name: "Манчестер Юнайтед",
+      logo: "img/logo/mu.png",
     },
     {
       id: 4,
       group: "a",
       name: "Копенгаген",
+      logo: "img/logo/København.png",
     },
     {
       id: 5,
       group: "b",
       name: "Арсенал",
+      logo: "img/logo/arsenal.png",
     },
     {
       id: 6,
       group: "b",
-      name: "Ленс",
+      name: "Ланс",
+      logo: "img/logo/lens.png",
     },
     {
       id: 7,
       group: "b",
       name: "Севилья",
+      logo: "img/logo/sev.png",
     },
     {
       id: 8,
       group: "b",
       name: "ПСВ",
+      logo: "img/logo/psv.png",
     },
     {
       id: 9,
       group: "c",
       name: "Реал Мадрид",
+      logo: "img/logo/real.png",
     },
     {
       id: 10,
       group: "c",
       name: "Наполи",
+      logo: "img/logo/napoli.png",
     },
     {
       id: 11,
       group: "c",
       name: "Брага",
+      logo: "img/logo/braga.png",
     },
     {
       id: 12,
       group: "c",
       name: "Юнион Берлин",
+      logo: "img/logo/ub.png",
     },
     {
       id: 13,
       group: "d",
       name: "Реал Сосьедад",
+      logo: "img/logo/realsos.png",
     },
     {
       id: 14,
       group: "d",
       name: "Интер",
+      logo: "img/logo/inter.png",
     },
     {
       id: 15,
       group: "d",
       name: "Зальцбург",
+      logo: "img/logo/salcb.png",
     },
     {
       id: 16,
       group: "d",
       name: "Бенфика",
+      logo: "img/logo/benf.png",
     },
     {
       id: 17,
       group: "e",
       name: "Фейенорд",
+      logo: "img/logo/fey.png",
     },
     {
       id: 18,
       group: "e",
       name: "Атлетико Мадрид",
+      logo: "img/logo/atlet.png",
     },
     {
       id: 19,
       group: "e",
       name: "Лацио",
+      logo: "img/logo/lazio.png",
     },
     {
       id: 20,
       group: "e",
       name: "Селтик",
+      logo: "img/logo/celtic.png",
     },
     {
       id: 21,
       group: "f",
       name: "ПСЖ",
+      logo: "img/logo/psg.png",
     },
     {
       id: 22,
       group: "f",
       name: "Боруссия Дортмунд",
+      logo: "img/logo/bor.png",
     },
     {
       id: 23,
       group: "f",
       name: "Ньюкасл",
+      logo: "img/logo/nc.png",
     },
     {
       id: 24,
       group: "f",
       name: "Милан",
+      logo: "img/logo/milan.png",
     },
     {
       id: 25,
       group: "g",
       name: "Манчестер Сити",
+      logo: "img/logo/mc.webp",
     },
     {
       id: 26,
       group: "g",
       name: "Лейпциг",
+      logo: "img/logo/leip.webp",
     },
     {
       id: 27,
       group: "g",
       name: "Янг Бойз",
+      logo: "img/logo/yb.png",
     },
     {
       id: 28,
       group: "g",
       name: "Црвена Звезда",
+      logo: "img/logo/crvena.png",
     },
     {
       id: 29,
       group: "h",
       name: "Барселона",
+      logo: "img/logo/barca.png",
     },
     {
       id: 30,
       group: "h",
       name: "Порту",
+      logo: "img/logo/porto.png",
     },
     {
       id: 31,
       group: "h",
       name: "Шахтер",
+      logo: "img/logo/shachtar.png",
     },
     {
       id: 32,
       group: "h",
       name: "Антверпен",
+      logo: "img/logo/ant.png",
     },
   ],
 };
@@ -231,7 +263,7 @@ function renderTable() {
 		<th>Забито</th>
 		<th>Проп.</th>
 		<th>Очки</th>
-		<th>Игрок	</th>
+		<th>Игрок</th>
 		</tr>
       </table>
 		 <div class="modal" data-modal="table">
@@ -298,7 +330,9 @@ function renderGroup(group) {
       const q = stats?.find((i) => i.team === t.name);
 
       return `<tr data-team="${t.name}">
-		<td>${t.name}</td>
+		<td class="team-logo"><image src="${t.logo}" width="35px" /><span>${
+        t.name
+      }</span></td>
 		<td>${q ? q.played : "-"}</td>
 		<td>${q ? q.win : "-"}</td>
 		<td>${q ? q.draw : "-"}</td>
@@ -406,7 +440,9 @@ function renderGroupStats(group) {
 
   const markup = stats.map((t) => {
     return `<tr data-team="${t.team}">
-		<td>${t.team}</td>
+		<td class="team-logo"><image src="${t.logo}" width="35px" /><span>${
+      t.name
+    }</span></td>
       <td>${t.played}</td>
 		<td>${t.win}</td>
 		<td>${t.draw}</td>
@@ -583,6 +619,7 @@ function countStats(match, score, player) {
 function updateStats(oldGame, newGame) {
   const updateGame = {
     group: oldGame.group,
+    logo: oldGame.logo,
     team: oldGame.team,
     played: oldGame.played + newGame.played,
     win: newGame.win > 0 ? oldGame.win + newGame.win : oldGame.win,
@@ -603,7 +640,9 @@ function reRenderStats(name) {
   const markup = stats
     .filter((t) => t.team === name)
     .map((t) => {
-      return `<td>${t.team}</td><td>${t.played}</td>
+      return `<td class="team-logo"><image src="${
+        t.logo
+      }" width="35px" /><span>${t.team}</span></td><td>${t.played}</td>
 		<td>${t.win}</td>
 		<td>${t.draw}</td>
           <td>${t.lose}</td>
