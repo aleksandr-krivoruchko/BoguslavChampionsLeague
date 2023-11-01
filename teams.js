@@ -224,11 +224,11 @@ if (localStorage.length === 0) {
   data.groups.forEach((gr) => {
     renderGroup(gr);
 
-    const rounds = roundRobin(filteredTeamsNameByGroup(gr));
-    const matches = load(`matches-${gr}`);
-    !matches && save(`matches-${gr}`, rounds);
+    //  const rounds = roundRobin(filteredTeamsNameByGroup(gr));
+    //  const matches = load(`matches-${gr}`);
+    //  !matches && save(`matches-${gr}`, rounds);
 
-    renderMatches(gr);
+    //  renderMatches(gr);
   });
 } else {
   data = { ...load("data") };
@@ -243,11 +243,18 @@ if (localStorage.length === 0) {
 }
 checkWinner();
 
+function updateData(group) {
+  const groupTeams = data.teams.filter((t) => t.group === group);
+  const groupPlayers = players.filter((p) => p.group === group);
+  console.log(groupPlayers, groupTeams);
+}
+
 function filteredTeamsNameByGroup(group) {
   return data.teams.filter((t) => t.group === group).map((t) => t.name);
 }
 
 function renderTable() {
+  alert("Выбирите группу и команды, которые хотите сделать чемпионом!!!");
   const markup = data.groups.map((gr) => {
     const teams = data.teams.filter((t) => t.group === gr).map((t) => t.name);
     return `<div class="group" >
@@ -403,26 +410,10 @@ function renderMatches(group) {
          <form class="modal-form">
         <div class="home-box">
 		 <input type="number" name="home" placeholder="${teamHome}" min="0">
-		 <label>
-        <input type="radio" name="homePlayer" value="С" />
-        С
-      </label>
-      <label>
-        <input type="radio" name="homePlayer" value="П" />
-        П
-      </label>
 		</div>
 		<span> - </span>
 		<div class="away-box">
 <input type="number" name="away" placeholder="${teamAway}" min="0"/> 
-		 <label>
-        <input type="radio" name="awayPlayer" value="С" />
-        С
-      </label>
-      <label>
-        <input type="radio" name="awayPlayer" value="П" />
-        П
-      </label>
 		</div>
         <button type="submit" class="btn modal-btn">OK</button>
   		</form>
@@ -456,6 +447,45 @@ function renderGroupStats(group) {
   document
     .querySelector(`table[data-group="${group}"]`)
     .insertAdjacentHTML("beforeend", markup.join(""));
+}
+
+function updateStats(oldGame, newGame) {
+  const updateGame = {
+    group: oldGame.group,
+    logo: oldGame.logo,
+    team: oldGame.team,
+    played: oldGame.played + newGame.played,
+    win: newGame.win > 0 ? oldGame.win + newGame.win : oldGame.win,
+    draw: newGame.draw > 0 ? oldGame.draw + newGame.draw : oldGame.draw,
+    lose: newGame.lose > 0 ? oldGame.draw + newGame.draw : oldGame.lose,
+    player: oldGame.player,
+    goals: {
+      for: oldGame.goals.for + newGame.goals.for,
+      against: oldGame.goals.against + newGame.goals.against,
+    },
+  };
+  return updateGame;
+}
+
+function reRenderStats(name) {
+  const stats = load("stats");
+
+  const markup = stats
+    .filter((t) => t.team === name)
+    .map((t) => {
+      return `<td class="team-logo"><image src="${
+        t.logo
+      }" width="35px" /><span>${t.team}</span></td><td>${t.played}</td>
+		<td>${t.win}</td>
+		<td>${t.draw}</td>
+          <td>${t.lose}</td>
+			 <td>${t.goals.for}</td>
+			 <td>${t.goals.against}</td>
+			 <td>${t.win * 3 + t.draw * 1}</td>
+			 <td>${t.player}</td>
+			 `;
+    });
+  document.querySelector(`tr[data-team='${name}']`).innerHTML = markup.join("");
 }
 
 function getID() {
@@ -616,45 +646,6 @@ function countStats(match, score, player) {
   return [t1, t2];
 }
 
-function updateStats(oldGame, newGame) {
-  const updateGame = {
-    group: oldGame.group,
-    logo: oldGame.logo,
-    team: oldGame.team,
-    played: oldGame.played + newGame.played,
-    win: newGame.win > 0 ? oldGame.win + newGame.win : oldGame.win,
-    draw: newGame.draw > 0 ? oldGame.draw + newGame.draw : oldGame.draw,
-    lose: newGame.lose > 0 ? oldGame.draw + newGame.draw : oldGame.lose,
-    player: oldGame.player,
-    goals: {
-      for: oldGame.goals.for + newGame.goals.for,
-      against: oldGame.goals.against + newGame.goals.against,
-    },
-  };
-  return updateGame;
-}
-
-function reRenderStats(name) {
-  const stats = load("stats");
-
-  const markup = stats
-    .filter((t) => t.team === name)
-    .map((t) => {
-      return `<td class="team-logo"><image src="${
-        t.logo
-      }" width="35px" /><span>${t.team}</span></td><td>${t.played}</td>
-		<td>${t.win}</td>
-		<td>${t.draw}</td>
-          <td>${t.lose}</td>
-			 <td>${t.goals.for}</td>
-			 <td>${t.goals.against}</td>
-			 <td>${t.win * 3 + t.draw * 1}</td>
-			 <td>${t.player}</td>
-			 `;
-    });
-  document.querySelector(`tr[data-team='${name}']`).innerHTML = markup.join("");
-}
-
 function renderTableModal(group) {
   const teams = data.teams.filter((t) => t.group === group).map((t) => t.name);
 
@@ -734,9 +725,12 @@ function tableModalHandlerSubmit(event) {
 
   const players = load("players") || [];
   const form = event.target;
+  const group = form.closest(".group").querySelector("table").dataset.group;
+  updateData(group);
 
   new FormData(form).forEach((value, name) =>
     players.push({
+      group,
       team: name,
       player: value,
     })
