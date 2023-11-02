@@ -255,7 +255,6 @@ if (localStorage.length === 0) {
     const rounds = roundRobin(filteredTeamsNameByGroup(gr));
     const matches = load(`matches-${gr}`);
 
-    const isGroupOpen = matches.some((m) => m.finished);
     !matches && save(`matches-${gr}`, rounds);
     renderMatches(gr);
   });
@@ -340,12 +339,12 @@ function renderTable() {
 
 function renderGroup(group) {
   const stats = load("stats");
-
+  const arr = [];
   const markup = data.teams
     .filter((t) => t.group === group)
     .map((t) => {
       const q = stats?.find((i) => i.team === t.name);
-
+      arr.push(q);
       return `<tr data-team="${t.name}">
 		<td class="team-logo"><image src="${t.logo}" width="35px" /><p>${
         t.name
@@ -356,12 +355,15 @@ function renderGroup(group) {
 		<td style="color:red">${q ? q.lose : "-"}</td>
 		<td>${q ? q.goals.for : "-"}</td>
 		<td>${q ? q.goals.against : "-"}</td>
-		<td class="points">${q ? q.win * 3 + q.draw * 1 : "-"}</td>
+		<td class="points">${q ? q.points : "-"}</td>
 		<td>${t.player || "-"}</td>
-        </tr>`;
+		</tr>`;
     });
+  const sortedArr = [...arr]
+    .sort((a, b) => b?.points - a?.points)
+    .sort((a, b) => b?.goals.for - a?.goals.for);
+
   const table = document.querySelector(`table[data-group="${group}"]`);
-  //   table.insertAdjacentHTML("beforeend", markup.join(""));
   table.innerHTML = [...tableHeader, ...markup].join("");
 
   table.addEventListener("click", tableModalOpen);
@@ -444,24 +446,25 @@ function renderMatches(group) {
   list.addEventListener("click", modalOpen);
 }
 
-function renderGroupStats(group) {
-  const stats = load("stats") || [];
+// function renderGroupStats(group) {
+//   const stats = load("stats") || [];
 
-  const markup = stats.map((t) => {
-    return `<tr data-team="${t.team}">
-      <td>${t.played}</td>
-		<td>${t.win}</td>
-		<td>${t.draw}</td>
-          <td>${t.lose}</td>
-			 <td>${t.goals.for}</td>
-			 <td>${t.goals.against}</td>
-			 <td>${t.win * 3 + t.draw * 1}</td>
-			 </tr>`;
-  });
-  document
-    .querySelector(`table[data-group="${group}"]`)
-    .insertAdjacentHTML("beforeend", markup.join(""));
-}
+//   const markup = stats.map((t) => {
+//     console.log(t);
+//     return `<tr data-team="${t.team}">
+//       <td>${t.played}</td>
+// 		<td>${t.win}</td>
+// 		<td>${t.draw}</td>
+//           <td>${t.lose}</td>
+// 			 <td>${t.goals.for}</td>
+// 			 <td>${t.goals.against}</td>
+// 			 <td>${t.points}</td>
+// 			 </tr>`;
+//   });
+//   document
+//     .querySelector(`table[data-group="${group}"]`)
+//     .insertAdjacentHTML("beforeend", markup.join(""));
+// }
 
 function updateStats(oldGame, newGame) {
   const updateGame = {
@@ -476,6 +479,8 @@ function updateStats(oldGame, newGame) {
       for: oldGame.goals.for + newGame.goals.for,
       against: oldGame.goals.against + newGame.goals.against,
     },
+    points:
+      newGame.points > 0 ? oldGame.points + newGame.points : oldGame.points,
   };
   return updateGame;
 }
@@ -492,7 +497,7 @@ function reRenderStats(name) {
           <td>${t.lose}</td>
 			 <td>${t.goals.for}</td>
 			 <td>${t.goals.against}</td>
-			 <td>${t.win * 3 + t.draw * 1}</td>
+			 <td>${t.points}</td>
 			 `;
     });
   document.querySelector(`tr[data-team='${name}']`).innerHTML = markup.join("");
@@ -617,6 +622,7 @@ function countStats(match, score) {
     draw: 0,
     lose: 0,
     goals: { for: 0, against: 0 },
+    points: 0,
   };
   const t2 = {
     team: match[1],
@@ -625,6 +631,7 @@ function countStats(match, score) {
     draw: 0,
     lose: 0,
     goals: { for: 0, against: 0 },
+    points: 0,
   };
 
   if (score[0] > score[1]) {
@@ -647,6 +654,8 @@ function countStats(match, score) {
   t1.goals.against = score[1];
   t2.goals.for = score[1];
   t2.goals.against = score[0];
+  t1.points = t1.win * 3 + t1.draw * 1;
+  t2.points = t2.win * 3 + t2.draw * 1;
 
   return [t1, t2];
 }
@@ -744,4 +753,9 @@ function tableModalHandlerSubmit(event) {
   renderGroup(group);
   renderMatches(group);
   checkWinner();
+}
+
+function sortTableByPoints() {
+  const tables = document.querySelectorAll("table");
+  console.log(tables);
 }
