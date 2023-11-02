@@ -1,3 +1,28 @@
+ul {
+  list-style: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
 * {
   font-family: Fjalla One;
   margin: 0;
@@ -11,9 +36,6 @@
   margin: 0 auto;
   padding: 20px;
   background-color: rgba(20, 3, 82, 0.6);
-}
-ul {
-  list-style: none;
 }
 
 html {
@@ -97,8 +119,6 @@ th {
 }
 
 .modal {
-  /* width: 500px;
-  height: 700px; */
   display: none;
   position: fixed;
   z-index: 1;
@@ -111,31 +131,29 @@ th {
   background-image: url(img/qqq.jpg);
   background-position: center;
   background-size: cover;
-  margin: 15% auto;
-  padding: 20px;
+  padding: 30px;
   border: 1px solid #fff;
   border-radius: 10px;
 }
-.modal form {
+div[data-modal="match"] form {
   display: flex;
   justify-content: space-around;
   align-items: baseline;
 }
-.modal input {
+div[data-modal="match"] input {
   padding: 5px;
   margin-bottom: 10px;
-  color: #06770c;
   font-size: 18px;
-  outline-color: #06770c;
+  color: #000000;
 }
-.modal form span {
+div[data-modal="match"] form span {
   font-size: 25px;
   color: #000000;
   margin-left: 5px;
   margin-right: 5px;
 }
-.modal .modal-btn {
-  position: absolute;
+div[data-modal="match"] .modal-btn {
+  /* position: absolute; */
   bottom: 35%;
 }
 .btn {
@@ -166,11 +184,31 @@ th {
 div[data-modal="table"] .modal-content {
   width: 400px;
   height: 300px;
+  padding: 60px;
   font-size: 24px;
   color: #fff;
   text-align: center;
   cursor: pointer;
 }
+div[data-modal="table"] form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+}
+div[data-modal="table"] form > ul {
+  width: 100%;
+}
+div[data-modal="table"] li {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+/* div[data-modal="table"] li > div {
+  margin-left: 50px;
+} */
 .modal-content .title {
   color: #fff;
   margin-right: 20px;
@@ -185,6 +223,13 @@ div[data-modal="table"] .modal-content {
   justify-content: left;
   align-items: center;
 }
-.team-logo span {
-  margin-left: 15px;
+.team-logo p {
+  margin-left: 20px;
+  text-align: left;
+}
+.points {
+  font-size: 24px;
+  font-weight: 500;
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #49ff18,
+    0 0 30px #49ff18, 0 0 40px #49ff18, 0 0 55px #49ff18, 0 0 75px #49ff18;
 }

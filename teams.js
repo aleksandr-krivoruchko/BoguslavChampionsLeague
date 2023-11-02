@@ -195,6 +195,17 @@ const source = {
     },
   ],
 };
+const tableHeader = `<tr class="col">
+		<th>Команда</th>
+		<th>Матчи</th>
+		<th>Победы</th>
+		<th>Ничьи</th>
+		<th>Проигр.</th>
+		<th>Забито</th>
+		<th>Проп.</th>
+		<th>Очки</th>
+		<th>Игрок</th>
+		</tr>`;
 
 let data = null;
 const root = document.querySelector(".root");
@@ -216,6 +227,12 @@ const load = (key) => {
   }
 };
 
+document.addEventListener("keydown", function (e) {
+  if (e.code === "Escape") {
+    closeModal();
+  }
+});
+
 if (localStorage.length === 0) {
   save("data", source);
   data = Object.assign({}, source);
@@ -223,55 +240,40 @@ if (localStorage.length === 0) {
 
   data.groups.forEach((gr) => {
     renderGroup(gr);
+    //  alert("Выбирите группу и команды, которые хотите сделать чемпионом!!!");
 
-    //  const rounds = roundRobin(filteredTeamsNameByGroup(gr));
-    //  const matches = load(`matches-${gr}`);
-    //  !matches && save(`matches-${gr}`, rounds);
-
-    //  renderMatches(gr);
+    const rounds = roundRobin(filteredTeamsNameByGroup(gr));
+    const matches = load(`matches-${gr}`);
+    !matches && save(`matches-${gr}`, rounds);
   });
 } else {
-  data = { ...load("data") };
+  data = load("data");
   renderTable();
+
   data.groups.forEach((gr) => {
     renderGroup(gr);
     const rounds = roundRobin(filteredTeamsNameByGroup(gr));
     const matches = load(`matches-${gr}`);
+
+    const isGroupOpen = matches.some((m) => m.finished);
     !matches && save(`matches-${gr}`, rounds);
     renderMatches(gr);
   });
 }
 checkWinner();
 
-function updateData(group) {
-  const groupTeams = data.teams.filter((t) => t.group === group);
-  const groupPlayers = players.filter((p) => p.group === group);
-  console.log(groupPlayers, groupTeams);
-}
-
 function filteredTeamsNameByGroup(group) {
   return data.teams.filter((t) => t.group === group).map((t) => t.name);
 }
 
 function renderTable() {
-  alert("Выбирите группу и команды, которые хотите сделать чемпионом!!!");
   const markup = data.groups.map((gr) => {
     const teams = data.teams.filter((t) => t.group === gr).map((t) => t.name);
     return `<div class="group" >
       <div>
 		<h3 class="heading">Группа ${gr}</h3>
       <table data-group="${gr}">
-		<tr class="col">
-		<th>Команда</th>
-		<th>Матчи</th>
-		<th>Победы</th>
-		<th>Ничьи</th>
-		<th>Проигр.</th>
-		<th>Забито</th>
-		<th>Проп.</th>
-		<th>Очки</th>
-		<th>Игрок</th>
-		</tr>
+		${tableHeader}
       </table>
 		 <div class="modal" data-modal="table">
 		<div class="modal-content">
@@ -279,42 +281,50 @@ function renderTable() {
           <ul>
             <li>
               <span class="title">${teams[0]}</span>
-              <label>
+              <div>
+				 <label>
                 <input type="radio" name="${teams[0]}" value="С" />C
               </label>
               <label>
                 <input type="radio" name="${teams[0]}" value="П" />П
-              </label>
+              </label> 
+				  </div>
             </li>
             <li>
               <span class="title">${teams[1]}</span>
-              <label>
+              <div>
+				 <label>
                 <input type="radio" name="${teams[1]}" value="С" />C
               </label>
               <label>
                 <input type="radio" name="${teams[1]}" value="П" />П
-              </label>
+              </label> 
+				  </div>
             </li>
             <li>
               <span class="title">${teams[2]}</span>
-              <label>
+              <div>
+				 <label>
                 <input type="radio" name="${teams[2]}" value="С" />C
               </label>
               <label>
                 <input type="radio" name="${teams[2]}" value="П" />П
-              </label>
+              </label> 
+				  </div>
             </li>
             <li>
-              <span class="title">${teams[3]}</span>
-              <label>
+              <p class="title">${teams[3]}</p>
+              <div>
+				 <label>
                 <input type="radio" name="${teams[3]}" value="С" />C
               </label>
               <label>
                 <input type="radio" name="${teams[3]}" value="П" />П
-              </label>
+              </label> 
+				  </div>
             </li>
+				</ul>
 				<button type="submit" class="btn table-btn">OK</button>
-          </ul>
         </form>
 		</div>
 		</div>
@@ -337,21 +347,23 @@ function renderGroup(group) {
       const q = stats?.find((i) => i.team === t.name);
 
       return `<tr data-team="${t.name}">
-		<td class="team-logo"><image src="${t.logo}" width="35px" /><span>${
+		<td class="team-logo"><image src="${t.logo}" width="35px" /><p>${
         t.name
-      }</span></td>
+      }</p></td>
 		<td>${q ? q.played : "-"}</td>
-		<td>${q ? q.win : "-"}</td>
-		<td>${q ? q.draw : "-"}</td>
-		<td>${q ? q.lose : "-"}</td>
+		<td style="color:#49ff18">${q ? q.win : "-"}</td>
+		<td style="color:yellow">${q ? q.draw : "-"}</td>
+		<td style="color:red">${q ? q.lose : "-"}</td>
 		<td>${q ? q.goals.for : "-"}</td>
 		<td>${q ? q.goals.against : "-"}</td>
-		<td>${q ? q.win * 3 + q.draw * 1 : "-"}</td>
-		<td>${q ? q.player : "-"}</td>
+		<td class="points">${q ? q.win * 3 + q.draw * 1 : "-"}</td>
+		<td>${t.player || "-"}</td>
         </tr>`;
     });
   const table = document.querySelector(`table[data-group="${group}"]`);
-  table.insertAdjacentHTML("beforeend", markup.join(""));
+  //   table.insertAdjacentHTML("beforeend", markup.join(""));
+  table.innerHTML = [...tableHeader, ...markup].join("");
+
   table.addEventListener("click", tableModalOpen);
 }
 
@@ -404,18 +416,24 @@ function renderMatches(group) {
     const teamHome = t.match[0];
     const teamAway = t.match[1];
 
-    return `<li class="match" data-group=${group}><p><span data-team="home">${teamHome}</span>  (<span class="home">${scoreHome}</span> : <span class="away">${scoreAway}</span>)  <span data-team="away">${teamAway}</span></p>
+    return `<li class="match" data-group=${group}><p><span data-team="home" >${teamHome}</span>  (<span class="home">${scoreHome}</span> : <span class="away">${scoreAway}</span>)  <span data-team="away">${teamAway}</span></p>
 	 <div class="modal" data-modal="match">
     <div class="modal-content">
          <form class="modal-form">
         <div class="home-box">
-		 <input type="number" name="home" placeholder="${teamHome}" min="0">
+		 <input type="number" name="home" placeholder="${teamHome}" min="0" ${
+      t.finished && "disabled"
+    }>
 		</div>
 		<span> - </span>
 		<div class="away-box">
-<input type="number" name="away" placeholder="${teamAway}" min="0"/> 
+<input type="number" name="away" placeholder="${teamAway}" min="0" ${
+      t.finished && "disabled"
+    }/> 
 		</div>
-        <button type="submit" class="btn modal-btn">OK</button>
+        <button type="submit" class="btn modal-btn" ${
+          t.finished && "disabled"
+        }>OK</button>
   		</form>
     </div>
   </div>
@@ -431,9 +449,6 @@ function renderGroupStats(group) {
 
   const markup = stats.map((t) => {
     return `<tr data-team="${t.team}">
-		<td class="team-logo"><image src="${t.logo}" width="35px" /><span>${
-      t.name
-    }</span></td>
       <td>${t.played}</td>
 		<td>${t.win}</td>
 		<td>${t.draw}</td>
@@ -441,7 +456,6 @@ function renderGroupStats(group) {
 			 <td>${t.goals.for}</td>
 			 <td>${t.goals.against}</td>
 			 <td>${t.win * 3 + t.draw * 1}</td>
-			 <td>${t.player}</td>
 			 </tr>`;
   });
   document
@@ -458,7 +472,6 @@ function updateStats(oldGame, newGame) {
     win: newGame.win > 0 ? oldGame.win + newGame.win : oldGame.win,
     draw: newGame.draw > 0 ? oldGame.draw + newGame.draw : oldGame.draw,
     lose: newGame.lose > 0 ? oldGame.draw + newGame.draw : oldGame.lose,
-    player: oldGame.player,
     goals: {
       for: oldGame.goals.for + newGame.goals.for,
       against: oldGame.goals.against + newGame.goals.against,
@@ -473,16 +486,13 @@ function reRenderStats(name) {
   const markup = stats
     .filter((t) => t.team === name)
     .map((t) => {
-      return `<td class="team-logo"><image src="${
-        t.logo
-      }" width="35px" /><span>${t.team}</span></td><td>${t.played}</td>
+      return `<td>${t.played}</td>
 		<td>${t.win}</td>
 		<td>${t.draw}</td>
           <td>${t.lose}</td>
 			 <td>${t.goals.for}</td>
 			 <td>${t.goals.against}</td>
 			 <td>${t.win * 3 + t.draw * 1}</td>
-			 <td>${t.player}</td>
 			 `;
     });
   document.querySelector(`tr[data-team='${name}']`).innerHTML = markup.join("");
@@ -504,8 +514,8 @@ function modalOpen(e) {
 }
 
 function closeModal() {
-  const modal = document.querySelector("div[data-modal='match'].open");
-  modal.classList.replace("open", "close");
+  const modal = document.querySelector("div[data-modal].open");
+  modal.classList.remove("open");
 }
 
 function handleSubmit(event) {
@@ -516,17 +526,13 @@ function handleSubmit(event) {
   const teamAway = form.closest("li").querySelector("span[data-team='away']");
   const group = form.closest("li").dataset.group;
   const matches = load(`matches-${group}`);
-  const players = load("players") || [];
   const home = Number(form.elements.home.value) || 0;
   const away = Number(form.elements.away.value) || 0;
-  const homePlayer = players.find((i) => i.team === teamHome.textContent);
-  const awayPlayer = players.find((i) => i.team === teamAway.textContent);
 
   const match = {
     match: [teamHome.textContent, teamAway.textContent],
     score: [home, away],
     finished: true,
-    player: [homePlayer?.player, awayPlayer?.player],
   };
   const index = matches.findIndex(
     (m) =>
@@ -539,6 +545,7 @@ function handleSubmit(event) {
   matchStats(match);
   reRenderStats(teamHome.textContent);
   reRenderStats(teamAway.textContent);
+  renderGroup(group);
 }
 
 function checkWinner() {
@@ -571,10 +578,10 @@ function checkWinner() {
   }
 }
 
-function matchStats({ match, score, player }) {
+function matchStats({ match, score }) {
   const stats = load("stats") || [];
-  const teamStat1 = countStats(match, score, player)[0];
-  const teamStat2 = countStats(match, score, player)[1];
+  const teamStat1 = countStats(match, score)[0];
+  const teamStat2 = countStats(match, score)[1];
 
   const teamInList1 = stats.find((i) => i.team === teamStat1.team);
   const index1 = stats.findIndex((i) => i.team === teamStat1.team);
@@ -602,7 +609,7 @@ function checkTeamInList(list, team) {
   return list.find((i) => i.team === team);
 }
 
-function countStats(match, score, player) {
+function countStats(match, score) {
   const t1 = {
     team: match[0],
     played: 0,
@@ -610,7 +617,6 @@ function countStats(match, score, player) {
     draw: 0,
     lose: 0,
     goals: { for: 0, against: 0 },
-    player: player[0],
   };
   const t2 = {
     team: match[1],
@@ -619,7 +625,6 @@ function countStats(match, score, player) {
     draw: 0,
     lose: 0,
     goals: { for: 0, against: 0 },
-    player: player[1],
   };
 
   if (score[0] > score[1]) {
@@ -723,18 +728,20 @@ function tableModalClose() {
 function tableModalHandlerSubmit(event) {
   event.preventDefault();
 
-  const players = load("players") || [];
   const form = event.target;
   const group = form.closest(".group").querySelector("table").dataset.group;
-  updateData(group);
 
-  new FormData(form).forEach((value, name) =>
-    players.push({
-      group,
-      team: name,
-      player: value,
-    })
-  );
+  new FormData(form).forEach((value, name) => {
+    data.teams.map((t) => {
+      if (t.name === name) {
+        t.player = value;
+      }
+    });
+  });
 
-  save("players", players);
+  save("data", data);
+
+  renderGroup(group);
+  renderMatches(group);
+  checkWinner();
 }
