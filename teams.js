@@ -209,6 +209,21 @@ const tableHeader = `<tr class="col">
 
 let data = null;
 const root = document.querySelector(".root");
+const audio = document.createElement("AUDIO");
+document.body.appendChild(audio);
+audio.src = "./audio/Jain - Makeba.mp3";
+
+document.body.addEventListener("keydown", function (e) {
+  if (e.code === "KeyP") {
+    audio.pause();
+  }
+});
+
+document.addEventListener("keydown", function (e) {
+  if (e.code === "Escape") {
+    closeModal();
+  }
+});
 
 const save = (key, value) => {
   try {
@@ -227,28 +242,31 @@ const load = (key) => {
   }
 };
 
-document.addEventListener("keydown", function (e) {
-  if (e.code === "Escape") {
-    closeModal();
-  }
-});
-
 if (localStorage.length === 0) {
   save("data", source);
   data = Object.assign({}, source);
+
   renderTable();
+
+  alert("Выберите группу и команды, которые хотите сделать чемпионом!!!");
+
+  document.body.addEventListener("mousemove", function () {
+    audio.play();
+  });
 
   data.groups.forEach((gr) => {
     renderGroup(gr);
-    //  alert("Выбирите группу и команды, которые хотите сделать чемпионом!!!");
-
     const rounds = roundRobin(filteredTeamsNameByGroup(gr));
     const matches = load(`matches-${gr}`);
     !matches && save(`matches-${gr}`, rounds);
+    checkWinner();
   });
 } else {
   data = load("data");
   renderTable();
+  document.body.addEventListener("dblclick", function () {
+    audio.play();
+  });
 
   data.groups.forEach((gr) => {
     renderGroup(gr);
@@ -257,9 +275,9 @@ if (localStorage.length === 0) {
 
     !matches && save(`matches-${gr}`, rounds);
     renderMatches(gr);
+    checkWinner();
   });
 }
-checkWinner();
 
 function filteredTeamsNameByGroup(group) {
   return data.teams.filter((t) => t.group === group).map((t) => t.name);
@@ -270,7 +288,7 @@ function renderTable() {
     const teams = data.teams.filter((t) => t.group === gr).map((t) => t.name);
     return `<div class="group" >
       <div>
-		<h3 class="heading">Группа ${gr}</h3>
+		<h3 class="heading">Группа <span>${gr}</span></h3>
       <table data-group="${gr}">
 		${tableHeader}
       </table>
@@ -339,30 +357,37 @@ function renderTable() {
 
 function renderGroup(group) {
   const stats = load("stats");
-  const arr = [];
-  const markup = data.teams
-    .filter((t) => t.group === group)
-    .map((t) => {
-      const q = stats?.find((i) => i.team === t.name);
-      arr.push(q);
-      return `<tr data-team="${t.name}">
-		<td class="team-logo"><image src="${t.logo}" width="35px" /><p>${
-        t.name
-      }</p></td>
-		<td>${q ? q.played : "-"}</td>
-		<td style="color:#49ff18">${q ? q.win : "-"}</td>
-		<td style="color:yellow">${q ? q.draw : "-"}</td>
-		<td style="color:red">${q ? q.lose : "-"}</td>
-		<td>${q ? q.goals.for : "-"}</td>
-		<td>${q ? q.goals.against : "-"}</td>
-		<td class="points">${q ? q.points : "-"}</td>
-		<td>${t.player || "-"}</td>
-		</tr>`;
-    });
-  const sortedArr = [...arr]
-    .sort((a, b) => b?.points - a?.points)
-    .sort((a, b) => b?.goals.for - a?.goals.for);
+  const arr = data.teams.filter((t) => t.group === group);
+  arr.map((t) => {
+    const q = stats?.find((i) => i.team === t.name);
+    t.points = q?.points || 0;
+    t.goals = q?.goals.for - q?.goals.against || 0;
+  });
+  const sortedTeamsByPoints = [...arr].sort((a, b) => {
+    const numDif = b?.points - a?.points;
+    if (numDif === 0) {
+      return b?.goals - a?.goals;
+    } else {
+      return numDif;
+    }
+  });
 
+  const markup = sortedTeamsByPoints.map((t) => {
+    const q = stats?.find((i) => i.team === t.name);
+    return `<tr data-team="${t.name}">
+  		<td class="team-logo"><image src="${t.logo}" width="35px" /><p>${
+      t.name
+    }</p></td>
+  		<td>${q ? q.played : "-"}</td>
+  		<td style="color:#49ff18">${q ? q.win : "-"}</td>
+  		<td style="color:yellow">${q ? q.draw : "-"}</td>
+  		<td style="color:red">${q ? q.lose : "-"}</td>
+  		<td>${q ? q.goals.for : "-"}</td>
+  		<td>${q ? q.goals.against : "-"}</td>
+  		<td class="points">${q ? q.points : "-"}</td>
+  		<td>${t.player || "-"}</td>
+  		</tr>`;
+  });
   const table = document.querySelector(`table[data-group="${group}"]`);
   table.innerHTML = [...tableHeader, ...markup].join("");
 
@@ -446,26 +471,6 @@ function renderMatches(group) {
   list.addEventListener("click", modalOpen);
 }
 
-// function renderGroupStats(group) {
-//   const stats = load("stats") || [];
-
-//   const markup = stats.map((t) => {
-//     console.log(t);
-//     return `<tr data-team="${t.team}">
-//       <td>${t.played}</td>
-// 		<td>${t.win}</td>
-// 		<td>${t.draw}</td>
-//           <td>${t.lose}</td>
-// 			 <td>${t.goals.for}</td>
-// 			 <td>${t.goals.against}</td>
-// 			 <td>${t.points}</td>
-// 			 </tr>`;
-//   });
-//   document
-//     .querySelector(`table[data-group="${group}"]`)
-//     .insertAdjacentHTML("beforeend", markup.join(""));
-// }
-
 function updateStats(oldGame, newGame) {
   const updateGame = {
     group: oldGame.group,
@@ -544,6 +549,7 @@ function handleSubmit(event) {
       m.match[0] + m.match[1] === teamHome.textContent + teamAway.textContent
   );
   matches.splice(index, 1, match);
+
   save(`matches-${group}`, matches);
   renderMatches(group);
   checkWinner();
@@ -731,7 +737,7 @@ function tableModalOpen(e) {
 function tableModalClose() {
   const modal = document.querySelector("div[data-modal='table'].open");
 
-  modal.classList.replace("open", "close");
+  modal.classList.remove("open");
 }
 
 function tableModalHandlerSubmit(event) {
@@ -749,13 +755,7 @@ function tableModalHandlerSubmit(event) {
   });
 
   save("data", data);
-
   renderGroup(group);
   renderMatches(group);
   checkWinner();
-}
-
-function sortTableByPoints() {
-  const tables = document.querySelectorAll("table");
-  console.log(tables);
 }

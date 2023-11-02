@@ -84,9 +84,14 @@ th {
   font-size: 20px;
   text-align: center;
   text-decoration: none;
-  text-transform: uppercase;
   color: #ffe221;
   margin-bottom: 10px;
+}
+.heading span {
+  text-transform: uppercase;
+  color: #ffe221;
+  font-weight: 700;
+  font-size: 24px;
 }
 
 .sasha {
@@ -228,8 +233,7 @@ div[data-modal="table"] li {
   text-align: left;
 }
 .points {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 500;
-  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #49ff18,
-    0 0 30px #49ff18, 0 0 40px #49ff18, 0 0 55px #49ff18, 0 0 75px #49ff18;
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff;
 }
