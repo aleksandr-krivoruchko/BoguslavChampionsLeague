@@ -225,6 +225,10 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
+document.addEventListener("load ", function () {
+  audio.play();
+});
+
 const save = (key, value) => {
   try {
     const serializedState = JSON.stringify(value);
@@ -242,17 +246,28 @@ const load = (key) => {
   }
 };
 
+function showToast(message, position, type) {
+  const toast = document.getElementById("toast");
+  toast.className = toast.className + " show";
+  if (message) toast.innerText = message;
+  if (position !== "") toast.className = toast.className + ` ${position}`;
+  if (type !== "") toast.className = toast.className + ` ${type}`;
+
+  setTimeout(function () {
+    toast.className = toast.className.replace(" show", "");
+  }, 3000);
+}
+
 if (localStorage.length === 0) {
   save("data", source);
   data = Object.assign({}, source);
+  showToast(
+    "Кликните на группу и распределите между собой команды)))",
+    "top",
+    "success"
+  );
 
   renderTable();
-
-  alert("Выберите группу и команды, которые хотите сделать чемпионом!!!");
-
-  document.body.addEventListener("mousemove", function () {
-    audio.play();
-  });
 
   data.groups.forEach((gr) => {
     renderGroup(gr);
@@ -296,50 +311,10 @@ function renderTable() {
 		<div class="modal-content">
         <form>
           <ul>
-            <li>
-              <span class="title">${teams[0]}</span>
-              <div>
-				 <label>
-                <input type="radio" name="${teams[0]}" value="С" />C
-              </label>
-              <label>
-                <input type="radio" name="${teams[0]}" value="П" />П
-              </label> 
-				  </div>
-            </li>
-            <li>
-              <span class="title">${teams[1]}</span>
-              <div>
-				 <label>
-                <input type="radio" name="${teams[1]}" value="С" />C
-              </label>
-              <label>
-                <input type="radio" name="${teams[1]}" value="П" />П
-              </label> 
-				  </div>
-            </li>
-            <li>
-              <span class="title">${teams[2]}</span>
-              <div>
-				 <label>
-                <input type="radio" name="${teams[2]}" value="С" />C
-              </label>
-              <label>
-                <input type="radio" name="${teams[2]}" value="П" />П
-              </label> 
-				  </div>
-            </li>
-            <li>
-              <p class="title">${teams[3]}</p>
-              <div>
-				 <label>
-                <input type="radio" name="${teams[3]}" value="С" />C
-              </label>
-              <label>
-                <input type="radio" name="${teams[3]}" value="П" />П
-              </label> 
-				  </div>
-            </li>
+            ${playerToggle(teams[0])}
+            ${playerToggle(teams[1])}
+            ${playerToggle(teams[2])}
+            ${playerToggle(teams[3])}
 				</ul>
 				<button type="submit" class="btn table-btn">OK</button>
         </form>
@@ -380,7 +355,7 @@ function renderGroup(group) {
     }</p></td>
   		<td>${q ? q.played : "-"}</td>
   		<td style="color:#49ff18">${q ? q.win : "-"}</td>
-  		<td style="color:yellow">${q ? q.draw : "-"}</td>
+  		<td style="color:orange">${q ? q.draw : "-"}</td>
   		<td style="color:red">${q ? q.lose : "-"}</td>
   		<td>${q ? q.goals.for : "-"}</td>
   		<td>${q ? q.goals.against : "-"}</td>
@@ -758,4 +733,18 @@ function tableModalHandlerSubmit(event) {
   renderGroup(group);
   renderMatches(group);
   checkWinner();
+}
+function playerToggle(player) {
+  return `<li>
+              <span class="title">${player}</span>
+              <div>
+				 <label>
+                <input type="radio" name="${player}" value="С" />C
+              </label>
+              <label>
+                <input type="radio" name="${player}" value="П" />П
+              </label> 
+				  </div>
+            </li>
+`;
 }

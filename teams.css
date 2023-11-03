@@ -132,11 +132,10 @@ th {
 }
 
 .modal-content {
-  height: 70px;
   background-image: url(img/qqq.jpg);
   background-position: center;
   background-size: cover;
-  padding: 30px;
+  padding: 40px;
   border: 1px solid #fff;
   border-radius: 10px;
 }
@@ -148,7 +147,7 @@ div[data-modal="match"] form {
 div[data-modal="match"] input {
   padding: 5px;
   margin-bottom: 10px;
-  font-size: 18px;
+  font-size: 20px;
   color: #000000;
 }
 div[data-modal="match"] form span {
@@ -211,9 +210,15 @@ div[data-modal="table"] li {
   justify-content: space-between;
   margin-bottom: 20px;
 }
-/* div[data-modal="table"] li > div {
+div[data-modal="table"] li > div {
+  width: 80px;
+  display: flex;
+  justify-content: space-between;
   margin-left: 50px;
-} */
+}
+div[data-modal="table"] li input {
+  margin-right: 3px;
+}
 .modal-content .title {
   color: #fff;
   margin-right: 20px;
@@ -236,4 +241,100 @@ div[data-modal="table"] li {
   font-size: 28px;
   font-weight: 500;
   text-shadow: 0 0 5px #fff, 0 0 10px #fff;
+}
+
+/*!============styles for notifications============================*/
+#toast {
+  visibility: hidden;
+  width: 100%;
+  max-width: 450px;
+  background: #f8ffff;
+  border: 1px solid #bedfe6;
+  border-left: 5px solid #2185d0;
+  border-radius: 5px;
+  padding: 15px;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#toast.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 4s;
+  animation: fadein 0.5s, fadeout 0.5s 4s;
+}
+#toast.show:hover {
+  animation-play-state: paused;
+}
+
+@keyframes fadein {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+}
+
+#toast.top {
+  top: 20px;
+  bottom: auto;
+}
+
+#toast.success {
+  background: rgba(2, 7, 75, 0.979);
+  border: 1px solid #bee6bf;
+  border-left: 5px solid #50ee38;
+  color: #fff;
+  font-size: 36px;
+}
+
+a {
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  padding: 5px 10px;
+  font-size: 14px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  color: #ccc;
+  background-color: transparent;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  cursor: pointer;
+}
+a:hover {
+  color: yellow;
+  border-color: yellow;
+}
+a:active {
+  color: red;
+  border-color: red;
+}
+.audio {
+  position: fixed;
+  top: 1%;
+  left: 1%;
+  background-color: inherit;
 }
