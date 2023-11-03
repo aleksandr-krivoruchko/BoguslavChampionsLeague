@@ -50,6 +50,19 @@ img {
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
+#start {
+  width: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  animation: ball 7s ease-in-out infinite backwards;
+}
+#start:hover {
+  animation-play-state: paused;
+}
+
 /* a {
   width: 200px;
   padding: 10px;
@@ -120,5 +133,17 @@ a:active {
 
   100% {
     transform: translateY(0%);
+  }
+}
+@keyframes ball {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  50% {
+    transform: scale(100) rotate(180deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
   }
 }
