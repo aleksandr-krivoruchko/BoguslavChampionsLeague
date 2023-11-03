@@ -209,24 +209,24 @@ const tableHeader = `<tr class="col">
 
 let data = null;
 const root = document.querySelector(".root");
-const audio = document.createElement("AUDIO");
-document.body.appendChild(audio);
-audio.src = "./audio/Jain - Makeba.mp3";
 
-document.body.addEventListener("keydown", function (e) {
-  if (e.code === "KeyP") {
-    audio.pause();
-  }
-});
+// const audio = document.createElement("AUDIO");
+// document.body.appendChild(audio);
+// audio.src = "./audio/Jain - Makeba.mp3";
+
+// document.body.addEventListener("keydown", function (e) {
+//   if (e.code === "KeyP") {
+//     audio.pause();
+//   }
+// });
+// document.addEventListener("load ", function () {
+//   audio.play();
+// });
 
 document.addEventListener("keydown", function (e) {
   if (e.code === "Escape") {
     closeModal();
   }
-});
-
-document.addEventListener("load ", function () {
-  audio.play();
 });
 
 const save = (key, value) => {

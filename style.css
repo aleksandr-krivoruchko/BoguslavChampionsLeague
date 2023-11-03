@@ -9,9 +9,11 @@ body {
 }
 h1 {
   color: #fff;
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff;
   text-align: center;
   font-size: 70px;
   font-weight: 700;
+  letter-spacing: 0.4rem;
   text-transform: uppercase;
   margin-bottom: 90px;
   animation: title 11s;
