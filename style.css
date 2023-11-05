@@ -61,33 +61,15 @@ img {
   cursor: pointer;
   animation: ball 7s ease-in-out infinite backwards;
 }
+#start img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 #start:hover {
   animation-play-state: paused;
 }
 
-/* a {
-  width: 200px;
-  padding: 10px;
-  font-size: 36px;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  text-align: center;
-  text-decoration: none;
-  color: #fff;
-  background-color: transparent;
-  border: 2px solid #fff;
-  border-radius: 30px;
-  cursor: pointer;
-}
-a:hover {
-  color: yellow;
-  border-color: yellow;
-}
-a:active {
-  color: red;
-  border-color: red;
-  width: 180px;
-} */
 @keyframes title {
   0% {
     transform: translateY(-200%);
@@ -99,7 +81,6 @@ a:active {
     opacity: 1;
   }
 }
-
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -109,7 +90,6 @@ a:active {
     transform: rotate(360deg);
   }
 }
-
 @keyframes sasha {
   0% {
     transform: translate(250%);

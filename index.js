@@ -9,13 +9,13 @@ function start() {
 	    <h1>boguslav champions league</h1>
     <div class="players">
       <div class="player pasha">
-        <img src="img/pasha.png" alt="Pasha" />
+        <img src="./img/pasha.png" alt="Pasha" />
       </div>
       <div class="stars">
-        <a href="./teams.html"> <img src="img/stars.png" alt="Logo" /> </a>
+        <a href="./teams.html"> <img src="./img/stars.png" alt="Logo" /> </a>
       </div>
       <div class="player sasha">
-        <img src="img/sasha.png" alt="Sasha" />
+        <img src="./img/sasha.png" alt="Sasha" />
       </div>
 		    <audio src="./audio/gimn.mp3" autoplay></audio>
 
