@@ -20,12 +20,14 @@ h1 {
 }
 
 img {
-  width: 700px;
+  display: block;
+  max-width: 80vh;
   height: auto;
 }
 .players {
   display: flex;
   justify-content: space-around;
+  align-items: center;
 }
 .player {
   text-align: center;
@@ -45,7 +47,7 @@ img {
   animation: stars 45s;
 }
 .stars img {
-  width: 400px;
+  width: 300px;
   margin-bottom: 50px;
   animation-name: spin;
   animation-duration: 10s;
