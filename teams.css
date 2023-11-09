@@ -31,7 +31,7 @@ a {
   color: white;
 }
 .root {
-  width: 1100px;
+  width: 1120px;
   height: auto;
   margin: 0 auto;
   padding: 20px;
@@ -56,7 +56,7 @@ table {
 th,
 td {
   padding: 10px;
-  height: 50px;
+  height: 70px;
   border-bottom: 1px solid yellowgreen;
   border-right: 1px solid yellowgreen;
   font-size: 20px;
@@ -186,9 +186,9 @@ div[data-modal="match"] .modal-btn {
 }
 
 div[data-modal="table"] .modal-content {
-  width: 400px;
-  height: 300px;
-  padding: 60px;
+  width: 450px;
+  height: 400px;
+  padding: 40px;
   font-size: 24px;
   color: #fff;
   text-align: center;
