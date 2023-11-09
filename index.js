@@ -6,13 +6,15 @@ startBtn.addEventListener("mouseover", svistok);
 
 function start() {
   const markup = `
-	    <h1>boguslav champions league</h1>
+	    <h3>boguslav pictures presents</h3>
     <div class="players">
       <div class="player pasha">
-        <img src="./img/pasha.png" alt="Pasha" />
+        <img src="./img/ppp.png" alt="Pasha" />
       </div>
       <div class="stars">
-        <a href="./teams.html"> <img src="./img/stars.png" alt="Logo" /> </a>
+		<img class="fuck" src="./img/FUCK (1).png" alt="Fuck" />
+        <a href="teams.html"> <img class="stars-image" src="./img/stars.png" alt="Logo" /> </a>
+		  <h1>CHAMPIONS LEAGUE</h1>
       </div>
       <div class="player sasha">
         <img src="./img/sasha.png" alt="Sasha" />
