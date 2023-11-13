@@ -139,10 +139,35 @@ th {
   border: 1px solid #fff;
   border-radius: 10px;
 }
+
+.open {
+  display: block;
+}
+.close {
+  display: none;
+}
+
+.team-logo {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.team-logo p {
+  margin-left: 20px;
+  text-align: left;
+}
+.points {
+  font-size: 28px;
+  font-weight: 500;
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff;
+}
+
+/*!============= styles for MATCH MODAL ==============================*/
+
 div[data-modal="match"] form {
   display: flex;
   justify-content: space-around;
-  align-items: baseline;
+  align-items: center;
 }
 div[data-modal="match"] input {
   padding: 5px;
@@ -156,34 +181,19 @@ div[data-modal="match"] form span {
   margin-left: 5px;
   margin-right: 5px;
 }
-div[data-modal="match"] .modal-btn {
-  /* position: absolute; */
-  bottom: 35%;
-}
 .btn {
-  padding: 10px;
-  margin-left: 10px;
-  text-align: center;
+  padding: 15px;
   background-color: inherit;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  color: #fff;
-  font-size: 14px;
+  animation: spin 12s linear infinite;
   cursor: pointer;
-  outline: none;
 }
 
 .btn:hover {
-  color: yellow;
-  border-color: yellow;
+  animation-play-state: paused;
+  scale: 1.05;
 }
 
-.open {
-  display: block;
-}
-.close {
-  display: none;
-}
+/*!============= styles for TABLE MODAL ==============================*/
 
 div[data-modal="table"] .modal-content {
   width: 450px;
@@ -228,21 +238,6 @@ div[data-modal="table"] li input {
   margin: 0 auto;
 }
 
-.team-logo {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
-.team-logo p {
-  margin-left: 20px;
-  text-align: left;
-}
-.points {
-  font-size: 28px;
-  font-weight: 500;
-  text-shadow: 0 0 5px #fff, 0 0 10px #fff;
-}
-
 /*!============styles for notifications============================*/
 #toast {
   visibility: hidden;
@@ -270,7 +265,58 @@ div[data-modal="table"] li input {
 #toast.show:hover {
   animation-play-state: paused;
 }
+#toast.top {
+  top: 20px;
+  bottom: auto;
+}
 
+#toast.success {
+  background: rgba(2, 7, 75, 0.979);
+  border: 1px solid #bee6bf;
+  border-left: 5px solid #50ee38;
+  color: #fff;
+  font-size: 36px;
+}
+
+/*!============== home button ===========================*/
+.links {
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+}
+
+.link {
+  display: block;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  color: #ccc;
+  background-color: transparent;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.link:hover {
+  color: yellow;
+  border-color: yellow;
+}
+.link:active {
+  color: red;
+  border-color: red;
+}
+
+.audio {
+  position: fixed;
+  top: 1%;
+  left: 1%;
+  background-color: inherit;
+}
+
+/*!=============== animations ========================================*/
 @keyframes fadein {
   from {
     transform: translateY(20px);
@@ -295,46 +341,12 @@ div[data-modal="table"] li input {
   }
 }
 
-#toast.top {
-  top: 20px;
-  bottom: auto;
-}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
 
-#toast.success {
-  background: rgba(2, 7, 75, 0.979);
-  border: 1px solid #bee6bf;
-  border-left: 5px solid #50ee38;
-  color: #fff;
-  font-size: 36px;
-}
-
-a {
-  position: fixed;
-  bottom: 5%;
-  right: 5%;
-  padding: 5px 10px;
-  font-size: 14px;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  text-align: center;
-  text-decoration: none;
-  color: #ccc;
-  background-color: transparent;
-  border: 2px solid #ccc;
-  border-radius: 20px;
-  cursor: pointer;
-}
-a:hover {
-  color: yellow;
-  border-color: yellow;
-}
-a:active {
-  color: red;
-  border-color: red;
-}
-.audio {
-  position: fixed;
-  top: 1%;
-  left: 1%;
-  background-color: inherit;
+  100% {
+    transform: rotate(360deg);
+  }
 }

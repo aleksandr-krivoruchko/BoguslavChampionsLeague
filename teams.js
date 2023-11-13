@@ -210,19 +210,6 @@ const tableHeader = `<tr class="col">
 let data = null;
 const root = document.querySelector(".root");
 
-// const audio = document.createElement("AUDIO");
-// document.body.appendChild(audio);
-// audio.src = "./audio/Jain - Makeba.mp3";
-
-// document.body.addEventListener("keydown", function (e) {
-//   if (e.code === "KeyP") {
-//     audio.pause();
-//   }
-// });
-// document.addEventListener("load ", function () {
-//   audio.play();
-// });
-
 document.addEventListener("keydown", function (e) {
   if (e.code === "Escape") {
     closeModal();
@@ -279,9 +266,6 @@ if (localStorage.length === 0) {
 } else {
   data = load("data");
   renderTable();
-  document.body.addEventListener("dblclick", function () {
-    audio.play();
-  });
 
   data.groups.forEach((gr) => {
     renderGroup(gr);
@@ -316,7 +300,7 @@ function renderTable() {
             ${playerToggle(teams[2])}
             ${playerToggle(teams[3])}
 				</ul>
-				<button type="submit" class="btn table-btn">OK</button>
+				<button type="submit" class="btn table-btn"><img src="img/stars.png" width="50px"/></button>
         </form>
 		</div>
 		</div>
@@ -427,15 +411,14 @@ function renderMatches(group) {
       t.finished && "disabled"
     }>
 		</div>
-		<span> - </span>
+        <button type="submit" class="btn modal-btn" ${
+          t.finished && "disabled"
+        }><img src="img/stars.png" width="50px"/></button>
 		<div class="away-box">
 <input type="number" name="away" placeholder="${teamAway}" min="0" ${
       t.finished && "disabled"
     }/> 
 		</div>
-        <button type="submit" class="btn modal-btn" ${
-          t.finished && "disabled"
-        }>OK</button>
   		</form>
     </div>
   </div>
@@ -454,7 +437,7 @@ function updateStats(oldGame, newGame) {
     played: oldGame.played + newGame.played,
     win: newGame.win > 0 ? oldGame.win + newGame.win : oldGame.win,
     draw: newGame.draw > 0 ? oldGame.draw + newGame.draw : oldGame.draw,
-    lose: newGame.lose > 0 ? oldGame.draw + newGame.draw : oldGame.lose,
+    lose: newGame.lose > 0 ? oldGame.lose + newGame.lose : oldGame.lose,
     goals: {
       for: oldGame.goals.for + newGame.goals.for,
       against: oldGame.goals.against + newGame.goals.against,
@@ -523,7 +506,10 @@ function handleSubmit(event) {
     (m) =>
       m.match[0] + m.match[1] === teamHome.textContent + teamAway.textContent
   );
+
   matches.splice(index, 1, match);
+
+  const isPlayedGroup = matches.every((m) => m.finished);
 
   save(`matches-${group}`, matches);
   renderMatches(group);
@@ -532,6 +518,10 @@ function handleSubmit(event) {
   reRenderStats(teamHome.textContent);
   reRenderStats(teamAway.textContent);
   renderGroup(group);
+
+  if (isPlayedGroup) {
+    showToast(`Лидеры группы ${group} определились!!!`, "bottom", "success");
+  }
 }
 
 function checkWinner() {
@@ -568,7 +558,6 @@ function matchStats({ match, score }) {
   const stats = load("stats") || [];
   const teamStat1 = countStats(match, score)[0];
   const teamStat2 = countStats(match, score)[1];
-
   const teamInList1 = stats.find((i) => i.team === teamStat1.team);
   const index1 = stats.findIndex((i) => i.team === teamStat1.team);
   const teamInList2 = stats.find((i) => i.team === teamStat2.team);
@@ -720,20 +709,24 @@ function tableModalHandlerSubmit(event) {
 
   const form = event.target;
   const group = form.closest(".group").querySelector("table").dataset.group;
+  const formData = new FormData(form);
 
-  new FormData(form).forEach((value, name) => {
-    data.teams.map((t) => {
-      if (t.name === name) {
-        t.player = value;
+  data.teams
+    .filter((t) => t.group === group)
+    .forEach((t) => {
+      for (const pair of formData.entries()) {
+        if (pair[0] === t.name) {
+          t.player = pair[1];
+        }
       }
     });
-  });
 
   save("data", data);
   renderGroup(group);
   renderMatches(group);
   checkWinner();
 }
+
 function playerToggle(player) {
   return `<li>
               <span class="title">${player}</span>
