@@ -215,7 +215,6 @@ document.addEventListener("keydown", function (e) {
     closeModal();
   }
 });
-
 const save = (key, value) => {
   try {
     const serializedState = JSON.stringify(value);
@@ -413,7 +412,7 @@ function renderMatches(group) {
 		</div>
         <button type="submit" class="btn modal-btn" ${
           t.finished && "disabled"
-        }><img src="img/stars.png" width="50px"/></button>
+        }><img src="img/stars.png" width="60px"/></button>
 		<div class="away-box">
 <input type="number" name="away" placeholder="${teamAway}" min="0" ${
       t.finished && "disabled"

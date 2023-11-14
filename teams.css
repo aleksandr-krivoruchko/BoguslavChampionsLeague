@@ -182,7 +182,8 @@ div[data-modal="match"] form span {
   margin-right: 5px;
 }
 .btn {
-  padding: 15px;
+  margin-left: 25px;
+  margin-right: 25px;
   background-color: inherit;
   animation: spin 12s linear infinite;
   cursor: pointer;

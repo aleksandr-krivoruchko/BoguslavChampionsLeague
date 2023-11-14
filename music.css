@@ -2,22 +2,27 @@
   position: fixed;
   top: 1%;
   left: 1%;
-  width: 80px;
+  width: 200px;
   height: auto;
+  padding: 10px;
   background-color: inherit;
   text-align: center;
   overflow: visible;
   white-space: nowrap;
+}
+.btns {
+  display: flex;
+  justify-content: space-between;
 }
 .music-btn {
   margin-bottom: 10px;
   cursor: pointer;
 }
 .icon {
-  width: 40px;
+  width: 35px;
 }
 .icon:hover {
-  transform: scale(0.8);
+  transform: scale(1.2);
 }
 .song {
   color: rgb(164, 61, 233);
@@ -25,4 +30,27 @@
   font-weight: 500;
   word-wrap: break-word;
   margin-bottom: 10px;
+}
+.progress-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 10px;
+  background-color: inherit;
+  border: 1px solid rgb(164, 61, 233);
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.progress {
+  height: 6px;
+  background-color: rgb(164, 61, 233);
+  border-radius: 5px;
+}
+
+.volume {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
 }
