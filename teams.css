@@ -187,6 +187,7 @@ div[data-modal="match"] form span {
   background-color: inherit;
   animation: spin 12s linear infinite;
   cursor: pointer;
+  outline: none;
 }
 
 .btn:hover {

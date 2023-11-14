@@ -32,27 +32,35 @@ a {
 }
 
 body {
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
   /* background-image: url("./img/road-map2.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   background-attachment: fixed; */
   margin: 0 auto;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .root {
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
+  padding: 20px;
 }
-.root div {
+.section {
   width: 14.25%;
-  height: 100vh;
-  border: 1px solid red;
+  height: 100%;
 }
-
-ul {
+.pad {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+.list_1_8 {
   width: 100%;
   height: 100%;
   display: flex;
@@ -60,30 +68,82 @@ ul {
   justify-content: space-between;
 }
 
-li {
+.item_1_8 {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  border: 5px solid yellow;
   width: 100%;
   height: 20%;
   align-items: center;
+  border: 3px solid green;
 }
 p {
-  font-size: 50px;
-  background-color: violet;
-  padding: 5px 20px;
-  border: 1px solid #fff;
+  font-size: 40px;
+  padding: 5px 5px;
+  border: 5px solid #fff;
   border-radius: 10px;
 }
-canvas {
-  width: 100vw;
-  height: 100vh;
-  background-image: url("./img/road-map2.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-attachment: fixed;
+.teams {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 75%;
+  height: 100%;
+}
+
+.list_1_8 .line {
+  width: 25%;
+  height: 100%;
+}
+.list_1_8 .hor {
+  width: 50%;
+  height: 25%;
+}
+.list_1_8 .bottom {
+  border-bottom: 5px solid #fff;
+}
+.list_1_8 .top {
+  border-top: 5px solid #fff;
+}
+
+.list_1_8 .ver {
+  width: 50%;
+  height: 50%;
+  border-right: 5px solid #fff;
+}
+
+.list_1_4 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.item_1_4 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 3px solid red;
+}
+.list_1_4 .line {
+  width: 25%;
+  height: 100%;
+}
+.list_1_4 .hor {
+  width: 50%;
+  height: 25%;
+}
+.list_1_4 .bottom {
+  border-bottom: 5px solid #fff;
+}
+.list_1_4 .top {
+  border-top: 5px solid #fff;
+}
+
+.list_1_4 .ver {
+  width: 50%;
+  height: 50%;
+  border-right: 5px solid #fff;
 }
