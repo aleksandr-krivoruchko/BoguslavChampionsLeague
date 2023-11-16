@@ -35,13 +35,14 @@ a {
   height: auto;
   margin: 0 auto;
   padding: 20px;
-  background-color: rgba(20, 3, 82, 0.6);
 }
 
-html {
+body {
   background-image: url("./img/teams-bg.jpg");
-  background-repeat: repeat-y;
-  background-size: 100vw;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 table {
@@ -51,6 +52,7 @@ table {
   border-collapse: collapse;
   border: 1px solid yellowgreen;
   cursor: pointer;
+  background-color: rgba(20, 3, 82, 0.6);
 }
 
 th,
@@ -278,6 +280,7 @@ div[data-modal="table"] li input {
   border-left: 5px solid #50ee38;
   color: #fff;
   font-size: 36px;
+  text-transform: uppercase;
 }
 
 /*!============== home button ===========================*/

@@ -215,6 +215,7 @@ document.addEventListener("keydown", function (e) {
     closeModal();
   }
 });
+
 const save = (key, value) => {
   try {
     const serializedState = JSON.stringify(value);
@@ -497,6 +498,7 @@ function handleSubmit(event) {
   const away = Number(form.elements.away.value) || 0;
 
   const match = {
+    group,
     match: [teamHome.textContent, teamAway.textContent],
     score: [home, away],
     finished: true,
@@ -553,10 +555,10 @@ function checkWinner() {
   }
 }
 
-function matchStats({ match, score }) {
+function matchStats({ match, score, group }) {
   const stats = load("stats") || [];
-  const teamStat1 = countStats(match, score)[0];
-  const teamStat2 = countStats(match, score)[1];
+  const teamStat1 = countStats(match, score, group)[0];
+  const teamStat2 = countStats(match, score, group)[1];
   const teamInList1 = stats.find((i) => i.team === teamStat1.team);
   const index1 = stats.findIndex((i) => i.team === teamStat1.team);
   const teamInList2 = stats.find((i) => i.team === teamStat2.team);
@@ -583,8 +585,9 @@ function checkTeamInList(list, team) {
   return list.find((i) => i.team === team);
 }
 
-function countStats(match, score) {
+function countStats(match, score, group) {
   const t1 = {
+    group,
     team: match[0],
     played: 0,
     win: 0,
@@ -594,6 +597,7 @@ function countStats(match, score) {
     points: 0,
   };
   const t2 = {
+    group,
     team: match[1],
     played: 0,
     win: 0,
@@ -740,3 +744,5 @@ function playerToggle(player) {
             </li>
 `;
 }
+
+function qqq() {}
