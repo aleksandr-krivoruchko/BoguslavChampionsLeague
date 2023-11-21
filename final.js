@@ -67,38 +67,128 @@ const load = (key) => {
     console.error("Get state error: ", error.message);
   }
 };
-const groups = load("data").groups;
+const list_1_8 = document.querySelector(".list_1_8");
+const list_1_8rev = document.querySelector(".list_1_8rev");
+
+const DATA = load("data");
 const stats = load("stats");
 
-stats
-  .filter((t) => t.group === "a")
-  .sort((t1, t2) => {
-    if (t2.points === t1.points) {
-      return (
-        t2.goals.for - t2.goals.against - (t1.goals.for - t1.goals.against)
-      );
-    }
-    return t2.points - t1.points;
+const teams = getTeams();
+const mixedTeams = randomizeArr(teams);
+const drawingTeams = draw(mixedTeams);
+
+const teamsDistributedInPairs = [];
+
+for (let i = 0; i < drawingTeams.length; i += 2) {
+  teamsDistributedInPairs.push([drawingTeams[i], drawingTeams[i + 1]]);
+}
+const teams_1_8 = teamsDistributedInPairs.slice(0, 4);
+const teams_1_8rev = teamsDistributedInPairs.slice(
+  4,
+  teamsDistributedInPairs.length
+);
+
+render_1_8();
+render_1_8rev();
+
+function render_1_8() {
+  const markup = teams_1_8.map((t) => {
+    return `<li class="item_1_8">
+            <div class="teams">
+              <p>${t[0].club}</p>
+              <p>${t[1].club}</p>
+            </div>
+            <div class="line">
+              <div class="hor bottom"></div>
+              <div class="ver"></div>
+              <div class="hor top"></div>
+            </div>
+          </li>
+`;
   });
+  list_1_8.insertAdjacentHTML("beforeend", markup.join(""));
+}
+function render_1_8rev() {
+  const markup = teams_1_8rev.map((t) => {
+    return `<li class="item_1_8rev">
+            <div class="line">
+              <div class="hor bottom"></div>
+              <div class="ver"></div>
+              <div class="hor top"></div>
+            </div>
+            <div class="teams">
+              <p>${t[0].club}</p>
+              <p>${t[1].club}</p>
+            </div>
+          </li>
+`;
+  });
+  list_1_8rev.insertAdjacentHTML("beforeend", markup.join(""));
+}
+function draw(data) {
+  const drawingResult = [];
 
-const winners = [];
-const runnersUp = [];
-
-groups.forEach((gr) => {
-  const q = stats
-    .filter((t) => t.group === gr)
-    .sort((t1, t2) => {
-      if (t2.points === t1.points) {
-        return (
-          t2.goals.for - t2.goals.against - (t1.goals.for - t1.goals.against)
-        );
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < data.length; j++) {
+      const cIndex = data[i];
+      const againstIndex = data[j];
+      if (
+        againstIndex.club !== cIndex.club &&
+        againstIndex.country !== cIndex.country &&
+        againstIndex.group !== cIndex.group &&
+        againstIndex.last_positions !== cIndex.last_positions
+      ) {
+        const drawOne = drawingResult
+          .map((c) => c.club)
+          .indexOf(againstIndex.club);
+        const drawTwo = drawingResult.map((c) => c.club).indexOf(cIndex.club);
+        if (drawOne === -1 && drawTwo === -1) {
+          cIndex.last_positions > againstIndex.last_positions
+            ? drawingResult.push(cIndex, againstIndex)
+            : drawingResult.push(againstIndex, cIndex);
+        }
       }
-      return t2.points - t1.points;
-    });
-  winners.push(q[0]);
-  runnersUp.push(q[1]);
-});
+    }
+  }
+  return drawingResult;
+}
+function getTeams() {
+  const winners = [];
+  const runnersUp = [];
+  const getCountryByClub = (club) => {
+    return DATA.teams.find((t) => t.name === club)?.country;
+  };
 
+  DATA.groups.forEach((gr) => {
+    const q = stats
+      .filter((t) => t.group === gr)
+      .sort((t1, t2) => {
+        if (t2.points === t1.points) {
+          return (
+            t2.goals.for - t2.goals.against - (t1.goals.for - t1.goals.against)
+          );
+        }
+        return t2.points - t1.points;
+      });
+
+    const w = {
+      country: getCountryByClub(q[0]?.team) || "",
+      club: q[0]?.team || "",
+      group: q[0]?.group || "",
+      last_positions: 1,
+    };
+    const r = {
+      country: getCountryByClub(q[1]?.team) || "",
+      club: q[1]?.team || "",
+      group: q[1]?.group || "",
+      last_positions: 2,
+    };
+
+    w.club && winners.push(w);
+    r.club && runnersUp.push(r);
+  });
+  return [...winners, ...runnersUp];
+}
 function randomizeArr(arr) {
   let cIndex = arr.length,
     tempValue,
@@ -114,29 +204,22 @@ function randomizeArr(arr) {
   return arr;
 }
 
-let drawingResult = [];
+// render(teams_1_8rev, list_1_8rev);
 
-// Loop over the data, I know it O(n^2) and you should avoid that
-for (let i = 0; i < data.length; i++) {
-  for (let j = 0; j < data.length; j++) {
-    const cIndex = data[i];
-    const againstIndex = data[j];
-    // This is the match up logic, to follow the procedure (see README)
-    if (
-      againstIndex.club !== cIndex.club &&
-      againstIndex.country !== cIndex.country &&
-      againstIndex.group !== cIndex.group &&
-      againstIndex.last_positions !== cIndex.last_positions
-    ) {
-      const drawOne = drawingResult
-        .map((c) => c.club)
-        .indexOf(againstIndex.club);
-      const drawTwo = drawingResult.map((c) => c.club).indexOf(cIndex.club);
-      if (drawOne === -1 && drawTwo === -1) {
-        cIndex.last_positions > againstIndex.last_positions
-          ? drawingResult.push(cIndex, againstIndex)
-          : drawingResult.push(againstIndex, cIndex);
-      }
-    }
-  }
-}
+// function render(round, domEl) {
+//   const markup = round.map((t) => {
+//     return `<li class="item_1_8rev">
+//             <div class="line">
+//               <div class="hor bottom"></div>
+//               <div class="ver"></div>
+//               <div class="hor top"></div>
+//             </div>
+//             <div class="teams">
+//               <p>${t[0].club}</p>
+//               <p>${t[1].club}</p>
+//             </div>
+//           </li>
+// `;
+//   });
+//   domEl.insertAdjacentHTML("beforeend", markup.join(""));
+// }
