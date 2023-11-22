@@ -776,5 +776,3 @@ function playerToggle(player) {
             </li>
 `;
 }
-
-function qqq() {}
