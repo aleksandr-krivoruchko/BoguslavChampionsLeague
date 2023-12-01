@@ -21,7 +21,7 @@ function start() {
       <div class="player sasha">
         <img src="./img/sasha.png" alt="Sasha" />
       </div>
-		    <audio src="./audio/gimn.mp3" ></audio>
+		    <audio src="./audio/gimn.mp3" autoplay></audio>
 
     </div>
 `;

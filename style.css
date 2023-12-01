@@ -75,8 +75,7 @@ img {
   align-items: center;
   color: #ffffff;
   text-shadow: 0 0 5px #fff, 0 0 10px #fff;
-
-  /* animation: stars 45s; */
+  animation: stars 45s;
 }
 .stars-image {
   width: 200px;
